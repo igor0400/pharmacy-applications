@@ -26,7 +26,7 @@ class ProblemId extends Component {
    componentDidMount() {
       axios
          .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${this.props.dbLink}.json`
+            `${/*link to firebase*/}/${this.props.dbLink}.json`
          )
          .then((response) => {
             const applications = this.state.applications;
