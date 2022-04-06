@@ -54,18 +54,18 @@ class StartPopup extends Component {
 
    async transferProdlem() {
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkAll}`
+         `${/*link to firebase*/}/${dbLinkAll}`
       );
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkUnaccepted}`
+         `${/*link to firebase*/}/${dbLinkUnaccepted}`
       );
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkInProgress}`
+         `${/*link to firebase*/}/${dbLinkInProgress}`
       );
 
       await axios
          .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkDone}.json`
+            `${/*link to firebase*/}/${dbLinkDone}.json`
          )
          .then(async (response) => {
             const applications = [];
@@ -82,19 +82,19 @@ class StartPopup extends Component {
                })
                .forEach((arr) => {
                   axios.delete(
-                     `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkDone}/${arr.id}.json`
+                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
                   );
                });
 
             await axios
                .post(
-                  `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkAll}.json`,
+                  `${/*link to firebase*/}/${dbLinkAll}.json`,
                   this.props.data
                )
                .catch(() => alert(this.state.alertText));
             await axios
                .post(
-                  `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkInProgress}.json`,
+                  `${/*link to firebase*/}/${dbLinkInProgress}.json`,
                   this.props.data
                )
                .then(() => {
@@ -184,18 +184,18 @@ class EndBtn extends Component {
 
    async transferProdlem() {
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkAll}`
+         `${/*link to firebase*/}/${dbLinkAll}`
       );
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkUnaccepted}`
+         `${/*link to firebase*/}/${dbLinkUnaccepted}`
       );
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkInProgress}`
+         `${/*link to firebase*/}/${dbLinkInProgress}`
       );
 
       await axios
          .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkDone}.json`
+            `${/*link to firebase*/}/${dbLinkDone}.json`
          )
          .then(async (response) => {
             const applications = [];
@@ -212,19 +212,19 @@ class EndBtn extends Component {
                })
                .forEach((arr) => {
                   axios.delete(
-                     `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkDone}/${arr.id}.json`
+                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
                   );
                });
 
             await axios
                .post(
-                  `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkAll}.json`,
+                  `${/*link to firebase*/}/${dbLinkAll}.json`,
                   this.props.data
                )
                .catch(() => alert(this.state.alertText));
             await axios
                .post(
-                  `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkDone}.json`,
+                  `${/*link to firebase*/}/${dbLinkDone}.json`,
                   this.props.data
                )
                .then(() => {
@@ -316,18 +316,18 @@ class DeleteBtn extends Component {
 
    async transferProdlem() {
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkAll}`
+         `${/*link to firebase*/}/${dbLinkAll}`
       );
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkUnaccepted}`
+         `${/*link to firebase*/}/${dbLinkUnaccepted}`
       );
       await this.deleteProblem(
-         `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkInProgress}`
+         `${/*link to firebase*/}/${dbLinkInProgress}`
       );
 
       await axios
          .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkDone}.json`
+            `${/*link to firebase*/}/${dbLinkDone}.json`
          )
          .then(async (response) => {
             const applications = [];
@@ -344,7 +344,7 @@ class DeleteBtn extends Component {
                })
                .forEach((arr) => {
                   axios.delete(
-                     `https://pharmacy-applications-default-rtdb.firebaseio.com/${dbLinkDone}/${arr.id}.json`
+                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
                   );
                });
          });
