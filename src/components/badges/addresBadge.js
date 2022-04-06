@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Component } from 'react';
 
-import { db } from '../app/App';
-import { ref, onChildAdded } from 'firebase/database';
+import { linkToFirebase } from '../getElements/getElements';
 
 class AddresBadge extends Component {
    state = {
@@ -13,9 +12,7 @@ class AddresBadge extends Component {
 
    componentDidMount() {
       axios
-         .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${this.props.dbLink}.json`
-         )
+         .get(`${linkToFirebase}/${this.props.dbLink}.json`)
          .then((response) => {
             const applications = this.state.applications;
 

@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import AddresBadge from '../badges/addresBadge';
 import AppItemAddres from '../appItem/appItemAddres';
+import { linkToFirebase } from '../getElements/getElements';
 
 import greenPlus from '../../img/icons/green-plus.svg';
 import bluePlus from '../../img/icons/blue-plus.svg';
@@ -19,9 +20,7 @@ class Addres extends Component {
 
    componentDidMount() {
       axios
-         .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${this.props.dbLink}.json`
-         )
+         .get(`${linkToFirebase}/${this.props.dbLink}.json`)
          .then((response) => {
             const applications = this.state.applications;
 

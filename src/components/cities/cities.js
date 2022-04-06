@@ -5,6 +5,8 @@ import { Component } from 'react';
 
 import AppItemIcon from '../appItem/appItemIcon';
 
+import { linkToFirebase } from '../getElements/getElements';
+
 import city from '../../img/icons/city.svg';
 import './cities.css';
 
@@ -17,9 +19,7 @@ class Cities extends Component {
 
    componentDidMount() {
       axios
-         .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${this.props.dbLink}.json`
-         )
+         .get(`${linkToFirebase}/${this.props.dbLink}.json`)
          .then((response) => {
             const applications = this.state.applications;
 

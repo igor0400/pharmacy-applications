@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Component } from 'react';
 
+import { linkToFirebase } from '../getElements/getElements';
+
 import Cards from '../cards/cards';
 
 import './problems.css';
@@ -20,9 +22,7 @@ class Problems extends Component {
 
    componentDidMount() {
       axios
-         .get(
-            `https://pharmacy-applications-default-rtdb.firebaseio.com/${this.props.dbLink}.json`
-         )
+         .get(`${linkToFirebase}/${this.props.dbLink}.json`)
          .then((response) => {
             const applications = this.state.applications;
 
