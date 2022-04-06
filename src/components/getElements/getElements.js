@@ -5,8 +5,7 @@ import Addres from '../addres/addres';
 import Problems from '../problems/problems';
 import ProblemId from '../problemId/problemId';
 
-const linkToFirebase =
-   'https://pharmacy-applications-default-rtdb.firebaseio.com';
+const linkToFirebase = /*your firedase link*/;
 const dbLinkAll = 'all';
 const dbLinkUnaccepted = 'unaccepted';
 const dbLinkInProgress = 'inProgress';
