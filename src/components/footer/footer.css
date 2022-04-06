@@ -1,0 +1,15 @@
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   padding: 10px;
+   background: #43a047;
+   width: 100%;
+   text-align: center;
+   color: #fff;
+   box-shadow: rgb(0 0 0 / 14%) 3px 4px, rgb(0 0 0 / 12%) 0px 3px 3px, rgb(0 0 0 / 20%) 0px 1px 8px;
+}
+.footer p {
+   margin: 0;
+   font-size: 14px;
+}

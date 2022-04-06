@@ -1,0 +1,25 @@
+.cards-img1 {
+   width: 20px;
+   height: 20px;
+   margin: -4px 3px 0 0;
+}
+.cards {
+   height: 125px;
+   margin: 10px;
+}
+
+.cards-img2 {
+   width: 13px;
+   height: 14px;
+   margin: 3px 3px 0 5px;
+}
+
+.card-text {
+   line-height: 19px;
+   color: rgb(32, 33, 36);
+}
+
+.flex {
+   display: flex;
+   word-break: break-all;
+}

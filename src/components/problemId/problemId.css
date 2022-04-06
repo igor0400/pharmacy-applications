@@ -1,0 +1,103 @@
+.problemIdCard {
+   margin: 0 auto;
+   max-width: 770px;
+   background: #fff;
+}
+
+.problemIdCard-wrapper {
+   border: 2px solid #f1f3f4;
+   margin-bottom: 10px;
+}
+
+.m-0 {
+   margin: 0;
+}
+.m-0-3 {
+   margin: 0px 3px 0 0;
+}
+.m-2-3 {
+   margin: 2px 3px 0 0;
+}
+.m-3-3 {
+   margin: 3px 3px 0 0;
+}
+.m-4-3 {
+   margin: 4px 3px 0 0;
+}
+.m-6-3 {
+   margin: 6px 3px 0 0;
+}
+.fz-10 {
+   font-size: 10px;
+}
+
+.problemIdCard-top {
+   padding: 15px 20px 30px;
+   border-bottom: 2px solid #f1f3f4;
+}
+.problemIdCard-top-title h5 {
+   font-size: 21px;
+}
+.problemIdCard-top-title img {
+   width: 18px;
+   height: 18px;
+}
+.problemIdCard-top-descr img {
+   height: 14px;
+   width: 8px;
+}
+.problemIdCard-top-descr {
+   padding: 15px 0 20px;
+}
+.problemIdCard-top-descr p {
+   line-height: 22px;
+   font-size: 18px;
+}
+.problemIdCard-top-city p {
+   color: #929292;
+   padding-left: 3px;
+   font-size: 18px;
+}
+
+.btn-light:focus {
+   border: none;
+   box-shadow: none;
+}
+
+.problemIdCard-top-btns {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, 200px);
+   gap: 10px;
+}
+
+.problemIdCard-bottom {
+   padding: 15px 20px 30px;
+}
+.default {
+   padding-bottom: 13px;
+}
+.default img{
+   width: 18px;
+   height: 18px;
+}
+.problemIdCard-bottom-status {
+   padding: 3px 0 13px 0;
+}
+.problemIdCard-bottom-status img {
+   width: 25px;
+   height: 25px;
+}
+.problemIdCard-bottom-status p {
+   font-size: 22px;
+   line-height: 25px;
+}
+.problemIdCard-bottom-prioritet {
+   padding: 1px 0 13px 0;
+}
+.problemIdCard-bottom-prioritet img {
+   width: 18px;
+   height: 18px;
+}
+.problemIdCard-bottom-date {
+   padding-bottom: 13px;
+}
