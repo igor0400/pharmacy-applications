@@ -55,6 +55,7 @@ class StartPopup extends Component {
 
    async transferProdlem() {
       await this.deleteProblem(
+<<<<<<< HEAD
          `${linkToFirebase}/${dbLinkAll}`
       );
       await this.deleteProblem(
@@ -62,11 +63,24 @@ class StartPopup extends Component {
       );
       await this.deleteProblem(
          `${linkToFirebase}/${dbLinkInProgress}`
+=======
+         `${/*link to firebase*/}/${dbLinkAll}`
+      );
+      await this.deleteProblem(
+         `${/*link to firebase*/}/${dbLinkUnaccepted}`
+      );
+      await this.deleteProblem(
+         `${/*link to firebase*/}/${dbLinkInProgress}`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
       );
 
       await axios
          .get(
+<<<<<<< HEAD
             `${linkToFirebase}/${dbLinkDone}.json`
+=======
+            `${/*link to firebase*/}/${dbLinkDone}.json`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
          )
          .then(async (response) => {
             const applications = [];
@@ -83,19 +97,31 @@ class StartPopup extends Component {
                })
                .forEach((arr) => {
                   axios.delete(
+<<<<<<< HEAD
                      `${linkToFirebase}/${dbLinkDone}/${arr.id}.json`
+=======
+                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   );
                });
 
             await axios
                .post(
+<<<<<<< HEAD
                   `${linkToFirebase}/${dbLinkAll}.json`,
+=======
+                  `${/*link to firebase*/}/${dbLinkAll}.json`,
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   this.props.data
                )
                .catch(() => alert(this.state.alertText));
             await axios
                .post(
+<<<<<<< HEAD
                   `${linkToFirebase}/${dbLinkInProgress}.json`,
+=======
+                  `${/*link to firebase*/}/${dbLinkInProgress}.json`,
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   this.props.data
                )
                .then(() => {
@@ -185,6 +211,7 @@ class EndBtn extends Component {
 
    async transferProdlem() {
       await this.deleteProblem(
+<<<<<<< HEAD
          `${linkToFirebase}/${dbLinkAll}`
       );
       await this.deleteProblem(
@@ -192,11 +219,24 @@ class EndBtn extends Component {
       );
       await this.deleteProblem(
          `${linkToFirebase}/${dbLinkInProgress}`
+=======
+         `${/*link to firebase*/}/${dbLinkAll}`
+      );
+      await this.deleteProblem(
+         `${/*link to firebase*/}/${dbLinkUnaccepted}`
+      );
+      await this.deleteProblem(
+         `${/*link to firebase*/}/${dbLinkInProgress}`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
       );
 
       await axios
          .get(
+<<<<<<< HEAD
             `${linkToFirebase}/${dbLinkDone}.json`
+=======
+            `${/*link to firebase*/}/${dbLinkDone}.json`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
          )
          .then(async (response) => {
             const applications = [];
@@ -213,19 +253,31 @@ class EndBtn extends Component {
                })
                .forEach((arr) => {
                   axios.delete(
+<<<<<<< HEAD
                      `${linkToFirebase}/${dbLinkDone}/${arr.id}.json`
+=======
+                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   );
                });
 
             await axios
                .post(
+<<<<<<< HEAD
                   `${linkToFirebase}/${dbLinkAll}.json`,
+=======
+                  `${/*link to firebase*/}/${dbLinkAll}.json`,
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   this.props.data
                )
                .catch(() => alert(this.state.alertText));
             await axios
                .post(
+<<<<<<< HEAD
                   `${linkToFirebase}/${dbLinkDone}.json`,
+=======
+                  `${/*link to firebase*/}/${dbLinkDone}.json`,
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   this.props.data
                )
                .then(() => {
@@ -317,6 +369,7 @@ class DeleteBtn extends Component {
 
    async transferProdlem() {
       await this.deleteProblem(
+<<<<<<< HEAD
          `${linkToFirebase}/${dbLinkAll}`
       );
       await this.deleteProblem(
@@ -324,11 +377,24 @@ class DeleteBtn extends Component {
       );
       await this.deleteProblem(
          `${linkToFirebase}/${dbLinkInProgress}`
+=======
+         `${/*link to firebase*/}/${dbLinkAll}`
+      );
+      await this.deleteProblem(
+         `${/*link to firebase*/}/${dbLinkUnaccepted}`
+      );
+      await this.deleteProblem(
+         `${/*link to firebase*/}/${dbLinkInProgress}`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
       );
 
       await axios
          .get(
+<<<<<<< HEAD
             `${linkToFirebase}/${dbLinkDone}.json`
+=======
+            `${/*link to firebase*/}/${dbLinkDone}.json`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
          )
          .then(async (response) => {
             const applications = [];
@@ -345,7 +411,11 @@ class DeleteBtn extends Component {
                })
                .forEach((arr) => {
                   axios.delete(
+<<<<<<< HEAD
                      `${linkToFirebase}/${dbLinkDone}/${arr.id}.json`
+=======
+                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   );
                });
          });

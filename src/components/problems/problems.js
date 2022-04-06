@@ -22,7 +22,13 @@ class Problems extends Component {
 
    componentDidMount() {
       axios
+<<<<<<< HEAD
          .get(`${linkToFirebase}/${this.props.dbLink}.json`)
+=======
+         .get(
+            `${/*link to firebase*/}/${this.props.dbLink}.json`
+         )
+>>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
          .then((response) => {
             const applications = this.state.applications;
 
