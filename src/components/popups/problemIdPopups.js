@@ -9,12 +9,13 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 import {
-   linkToFirebase,
    dbLinkAll,
    dbLinkUnaccepted,
    dbLinkInProgress,
    dbLinkDone,
 } from '../getElements/getElements';
+
+import { linkToFirebase } from '../../services/dbLinks';
 
 import tresh from '../../img/icons/alternate-trash.svg';
 
@@ -43,7 +44,7 @@ class StartPopup extends Component {
 
          applications
             .filter((arr) => {
-               if (arr.id2 == this.props.id) {
+               if (arr.id2 === this.props.id) {
                   return arr;
                }
             })
@@ -54,34 +55,11 @@ class StartPopup extends Component {
    }
 
    async transferProdlem() {
-      await this.deleteProblem(
-<<<<<<< HEAD
-         `${linkToFirebase}/${dbLinkAll}`
-      );
-      await this.deleteProblem(
-         `${linkToFirebase}/${dbLinkUnaccepted}`
-      );
-      await this.deleteProblem(
-         `${linkToFirebase}/${dbLinkInProgress}`
-=======
-         `${/*link to firebase*/}/${dbLinkAll}`
-      );
-      await this.deleteProblem(
-         `${/*link to firebase*/}/${dbLinkUnaccepted}`
-      );
-      await this.deleteProblem(
-         `${/*link to firebase*/}/${dbLinkInProgress}`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-      );
-
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
       await axios
-         .get(
-<<<<<<< HEAD
-            `${linkToFirebase}/${dbLinkDone}.json`
-=======
-            `${/*link to firebase*/}/${dbLinkDone}.json`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-         )
+         .get(`${linkToFirebase}/${dbLinkDone}.json`)
          .then(async (response) => {
             const applications = [];
 
@@ -91,37 +69,22 @@ class StartPopup extends Component {
 
             await applications
                .filter((arr) => {
-                  if (arr.id2 == this.props.id) {
+                  if (arr.id2 === this.props.id) {
                      return arr;
                   }
                })
                .forEach((arr) => {
                   axios.delete(
-<<<<<<< HEAD
                      `${linkToFirebase}/${dbLinkDone}/${arr.id}.json`
-=======
-                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   );
                });
 
             await axios
-               .post(
-<<<<<<< HEAD
-                  `${linkToFirebase}/${dbLinkAll}.json`,
-=======
-                  `${/*link to firebase*/}/${dbLinkAll}.json`,
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-                  this.props.data
-               )
+               .post(`${linkToFirebase}/${dbLinkAll}.json`, this.props.data)
                .catch(() => alert(this.state.alertText));
             await axios
                .post(
-<<<<<<< HEAD
                   `${linkToFirebase}/${dbLinkInProgress}.json`,
-=======
-                  `${/*link to firebase*/}/${dbLinkInProgress}.json`,
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   this.props.data
                )
                .then(() => {
@@ -199,7 +162,7 @@ class EndBtn extends Component {
 
          applications
             .filter((arr) => {
-               if (arr.id2 == this.props.id) {
+               if (arr.id2 === this.props.id) {
                   return arr;
                }
             })
@@ -210,34 +173,11 @@ class EndBtn extends Component {
    }
 
    async transferProdlem() {
-      await this.deleteProblem(
-<<<<<<< HEAD
-         `${linkToFirebase}/${dbLinkAll}`
-      );
-      await this.deleteProblem(
-         `${linkToFirebase}/${dbLinkUnaccepted}`
-      );
-      await this.deleteProblem(
-         `${linkToFirebase}/${dbLinkInProgress}`
-=======
-         `${/*link to firebase*/}/${dbLinkAll}`
-      );
-      await this.deleteProblem(
-         `${/*link to firebase*/}/${dbLinkUnaccepted}`
-      );
-      await this.deleteProblem(
-         `${/*link to firebase*/}/${dbLinkInProgress}`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-      );
-
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
       await axios
-         .get(
-<<<<<<< HEAD
-            `${linkToFirebase}/${dbLinkDone}.json`
-=======
-            `${/*link to firebase*/}/${dbLinkDone}.json`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-         )
+         .get(`${linkToFirebase}/${dbLinkDone}.json`)
          .then(async (response) => {
             const applications = [];
 
@@ -247,39 +187,21 @@ class EndBtn extends Component {
 
             await applications
                .filter((arr) => {
-                  if (arr.id2 == this.props.id) {
+                  if (arr.id2 === this.props.id) {
                      return arr;
                   }
                })
                .forEach((arr) => {
                   axios.delete(
-<<<<<<< HEAD
                      `${linkToFirebase}/${dbLinkDone}/${arr.id}.json`
-=======
-                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   );
                });
 
             await axios
-               .post(
-<<<<<<< HEAD
-                  `${linkToFirebase}/${dbLinkAll}.json`,
-=======
-                  `${/*link to firebase*/}/${dbLinkAll}.json`,
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-                  this.props.data
-               )
+               .post(`${linkToFirebase}/${dbLinkAll}.json`, this.props.data)
                .catch(() => alert(this.state.alertText));
             await axios
-               .post(
-<<<<<<< HEAD
-                  `${linkToFirebase}/${dbLinkDone}.json`,
-=======
-                  `${/*link to firebase*/}/${dbLinkDone}.json`,
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-                  this.props.data
-               )
+               .post(`${linkToFirebase}/${dbLinkDone}.json`, this.props.data)
                .then(() => {
                   alert('Заявка перешла в раздел "выполнено"');
                })
@@ -357,7 +279,7 @@ class DeleteBtn extends Component {
 
          applications
             .filter((arr) => {
-               if (arr.id2 == this.props.id) {
+               if (arr.id2 === this.props.id) {
                   return arr;
                }
             })
@@ -368,34 +290,11 @@ class DeleteBtn extends Component {
    }
 
    async transferProdlem() {
-      await this.deleteProblem(
-<<<<<<< HEAD
-         `${linkToFirebase}/${dbLinkAll}`
-      );
-      await this.deleteProblem(
-         `${linkToFirebase}/${dbLinkUnaccepted}`
-      );
-      await this.deleteProblem(
-         `${linkToFirebase}/${dbLinkInProgress}`
-=======
-         `${/*link to firebase*/}/${dbLinkAll}`
-      );
-      await this.deleteProblem(
-         `${/*link to firebase*/}/${dbLinkUnaccepted}`
-      );
-      await this.deleteProblem(
-         `${/*link to firebase*/}/${dbLinkInProgress}`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-      );
-
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
+      await this.deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
       await axios
-         .get(
-<<<<<<< HEAD
-            `${linkToFirebase}/${dbLinkDone}.json`
-=======
-            `${/*link to firebase*/}/${dbLinkDone}.json`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-         )
+         .get(`${linkToFirebase}/${dbLinkDone}.json`)
          .then(async (response) => {
             const applications = [];
 
@@ -405,17 +304,13 @@ class DeleteBtn extends Component {
 
             await applications
                .filter((arr) => {
-                  if (arr.id2 == this.props.id) {
+                  if (arr.id2 === this.props.id) {
                      return arr;
                   }
                })
                .forEach((arr) => {
                   axios.delete(
-<<<<<<< HEAD
                      `${linkToFirebase}/${dbLinkDone}/${arr.id}.json`
-=======
-                     `${/*link to firebase*/}/${dbLinkDone}/${arr.id}.json`
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
                   );
                });
          });

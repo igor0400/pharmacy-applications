@@ -7,7 +7,7 @@ class Cards extends Component {
    imgText() {
       let imgText;
 
-      if (this.props.prioritet == 'Cрочно') {
+      if (this.props.prioritet === 'Cрочно') {
          imgText = this.props.imgPrioritet;
       } else {
          imgText = this.props.imgText;
@@ -19,7 +19,7 @@ class Cards extends Component {
    styles() {
       let styles;
 
-      if (this.props.prioritet == 'Cрочно') {
+      if (this.props.prioritet === 'Cрочно') {
          styles = { color: '#C55300' };
       }
 

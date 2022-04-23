@@ -1,76 +1,62 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import Cities from '../cities/cities';
 import Addres from '../addres/addres';
 import Problems from '../problems/problems';
 import ProblemId from '../problemId/problemId';
 
-const linkToFirebase = /*your firedase link*/;
+// Эти ссылки еще где то используются, так как они экспортированы
 const dbLinkAll = 'all';
 const dbLinkUnaccepted = 'unaccepted';
 const dbLinkInProgress = 'inProgress';
 const dbLinkDone = 'done';
 
-function GetElementsAll() {
-   return (
-      <div>
-         <Route exact path="/citiesAll">
-            <Cities dbLink={dbLinkAll} pathLink="citiesAll" />
-         </Route>
-         <Addres dbLink={dbLinkAll} pathLink="citiesAll" />
-         <Problems dbLink={dbLinkAll} pathLink="citiesAll" />
-         <ProblemId dbLink={dbLinkAll} pathLink="citiesAll" />
-      </div>
-   );
+const elementsData = [
+  {
+    dbLink: 'all',
+    pathLink: 'citiesAll',
+  },
+  {
+    dbLink: 'unaccepted',
+    pathLink: 'citiesUnaccepted',
+  },
+  {
+    dbLink: 'inProgress',
+    pathLink: 'citiesInProgress',
+  },
+  {
+    dbLink: 'done',
+    pathLink: 'citiesDone',
+  },
+];
+
+function GetElement(props) {
+  return (
+    <div>
+      <Route exact path={`/${props.pathLink}`}>
+        <Cities dbLink={props.dbLink} pathLink={props.pathLink} />
+      </Route>
+      <Addres dbLink={props.dbLink} pathLink={props.pathLink} />
+      <Problems dbLink={props.dbLink} pathLink={props.pathLink} />
+      <ProblemId dbLink={props.dbLink} pathLink={props.pathLink} />
+    </div>
+  );
 }
 
-function GetElementsUnaccepted() {
-   return (
-      <div>
-         <Route exact path="/citiesUnaccepted">
-            <Cities dbLink={dbLinkUnaccepted} pathLink="citiesUnaccepted" />
-         </Route>
-         <Addres dbLink={dbLinkUnaccepted} pathLink="citiesUnaccepted" />
-         <Problems dbLink={dbLinkUnaccepted} pathLink="citiesUnaccepted" />
-         <ProblemId dbLink={dbLinkUnaccepted} pathLink="citiesUnaccepted" />
-      </div>
-   );
-}
-
-function GetElementsInProgress() {
-   return (
-      <div>
-         <Route exact path="/citiesInProgress">
-            <Cities dbLink={dbLinkInProgress} pathLink="citiesInProgress" />
-         </Route>
-         <Addres dbLink={dbLinkInProgress} pathLink="citiesInProgress" />
-         <Problems dbLink={dbLinkInProgress} pathLink="citiesInProgress" />
-         <ProblemId dbLink={dbLinkInProgress} pathLink="citiesInProgress" />
-      </div>
-   );
-}
-
-function GetElementsDone() {
-   return (
-      <div>
-         <Route exact path="/citiesDone">
-            <Cities dbLink={dbLinkDone} pathLink="citiesDone" />
-         </Route>
-         <Addres dbLink={dbLinkDone} pathLink="citiesDone" />
-         <Problems dbLink={dbLinkDone} pathLink="citiesDone" />
-         <ProblemId dbLink={dbLinkDone} pathLink="citiesDone" />
-      </div>
-   );
+function GetElements() {
+  return (
+    <div>
+      {elementsData.map((item, i) => (
+        <GetElement key={i} dbLink={item.dbLink} pathLink={item.pathLink} />
+      ))}
+    </div>
+  );
 }
 
 export {
-   linkToFirebase,
-   dbLinkAll,
-   dbLinkUnaccepted,
-   dbLinkInProgress,
-   dbLinkDone,
-   GetElementsAll,
-   GetElementsUnaccepted,
-   GetElementsInProgress,
-   GetElementsDone,
+  dbLinkAll,
+  dbLinkUnaccepted,
+  dbLinkInProgress,
+  dbLinkDone,
+  GetElements,
 };

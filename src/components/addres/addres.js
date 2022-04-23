@@ -1,124 +1,114 @@
 import ListGroup from 'react-bootstrap/ListGroup';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Component } from 'react';
 import axios from 'axios';
 
 import AddresBadge from '../badges/addresBadge';
 import AppItemAddres from '../appItem/appItemAddres';
-import { linkToFirebase } from '../getElements/getElements';
+import { linkToFirebase } from '../../services/dbLinks';
 
 import greenPlus from '../../img/icons/green-plus.svg';
 import bluePlus from '../../img/icons/blue-plus.svg';
 
 class Addres extends Component {
-   state = {
-      applications: [],
-      addres: [],
-      cities: {},
-   };
+  state = {
+    applications: [],
+    addres: [],
+    cities: {},
+  };
 
-   componentDidMount() {
-      axios
-<<<<<<< HEAD
-         .get(`${linkToFirebase}/${this.props.dbLink}.json`)
-=======
-         .get(
-            `${/*link to firebase*/}/${this.props.dbLink}.json`
-         )
->>>>>>> 8d7a130d2e4dbb94b18b9ee9d1a39b7d21248d92
-         .then((response) => {
-            const applications = this.state.applications;
+  componentDidMount() {
+    axios
+      .get(`${linkToFirebase}/${this.props.dbLink}.json`)
+      .then((response) => {
+        const applications = this.state.applications;
 
-            for (let key in response.data) {
-               applications.push({ ...response.data[key], id: key });
-            }
+        for (let key in response.data) {
+          applications.push({ ...response.data[key], id: key });
+        }
 
-            this.setState({ applications });
+        this.setState({ applications });
 
-            const cities = this.state.cities;
+        const cities = this.state.cities;
 
-            for (const cityInfo of this.state.applications) {
-               if (cities.hasOwnProperty(cityInfo.city)) {
-                  cities[cityInfo.city].push(cityInfo);
-               } else {
-                  cities[cityInfo.city] = [cityInfo];
-               }
-            }
+        for (const cityInfo of this.state.applications) {
+          if (cities.hasOwnProperty(cityInfo.city)) {
+            cities[cityInfo.city].push(cityInfo);
+          } else {
+            cities[cityInfo.city] = [cityInfo];
+          }
+        }
 
-            this.setState({ cities });
+        this.setState({ cities });
 
-            for (let key in cities) {
-               cities[key].reduce((acc, addres) => {
-                  if (acc[addres.addres]) return acc;
+        for (let key in cities) {
+          cities[key].reduce((acc, addres) => {
+            if (acc[addres.addres]) return acc;
 
-                  acc[addres.addres] = true;
-                  const newArray = this.state.addres;
-                  newArray.push(addres);
-                  this.setState({ addres: newArray });
-                  return acc;
-               }, {});
-            }
-         });
-   }
+            acc[addres.addres] = true;
+            const newArray = this.state.addres;
+            newArray.push(addres);
+            this.setState({ addres: newArray });
+            return acc;
+          }, {});
+        }
+      });
+  }
 
-   styles(arr) {
-      let style;
+  styles(arr) {
+    let style;
 
-      if (arr.substring(0, 2) == 'АД') {
-         style = { color: 'rgb(0, 177, 31)' };
-      } else if (arr.substring(0, 2) == 'ФЗ') {
-         style = { color: 'rgb(3, 123, 228)' };
-      }
+    if (arr.substring(0, 2) === 'АД') {
+      style = { color: 'rgb(0, 177, 31)' };
+    } else if (arr.substring(0, 2) === 'ФЗ') {
+      style = { color: 'rgb(3, 123, 228)' };
+    }
 
-      return style;
-   }
+    return style;
+  }
 
-   img(arr) {
-      let img;
+  img(arr) {
+    let img;
 
-      if (arr.substring(0, 2) == 'АД') {
-         img = greenPlus;
-      } else if (arr.substring(0, 2) == 'ФЗ') {
-         img = bluePlus;
-      }
+    if (arr.substring(0, 2) === 'АД') {
+      img = greenPlus;
+    } else if (arr.substring(0, 2) === 'ФЗ') {
+      img = bluePlus;
+    }
 
-      return img;
-   }
+    return img;
+  }
 
-   render() {
-      return (
-         <div>
-            {this.state.addres.map((arr, i) => (
-               <Route
-                  key={i}
-                  exact
-                  path={`/${this.props.pathLink}/${arr.city}`}
-               >
-                  <ListGroup variant="flush">
-                     <Link
-                        to={`/${this.props.pathLink}/${arr.city}/${arr.addres}`}
-                        className="a"
-                     >
-                        <AppItemAddres
-                           text={arr.addres}
-                           stylesArr={this.styles(arr.addres)}
-                           img={this.img(arr.addres)}
-                           badge={
-                              <AddresBadge
-                                 city={arr.city}
-                                 addres={arr.addres}
-                                 dbLink={this.props.dbLink}
-                              />
-                           }
-                        />
-                     </Link>
-                  </ListGroup>
-               </Route>
-            ))}
-         </div>
-      );
-   }
+  render() {
+    return (
+      <div>
+        {this.state.addres.map((arr, i) => (
+          <Route key={i} exact path={`/${this.props.pathLink}/${arr.city}`}>
+            <ListGroup variant="flush">
+              <Link
+                to={`/${this.props.pathLink}/${arr.city}/${arr.addres}`}
+                className="a"
+              >
+                <AppItemAddres
+                  text={arr.addres}
+                  stylesArr={this.styles(arr.addres)}
+                  img={this.img(arr.addres)}
+                  badge={
+                    <AddresBadge
+                      city={arr.city}
+                      addres={arr.addres}
+                      dbLink={this.props.dbLink}
+                    />
+                  }
+                />
+              </Link>
+            </ListGroup>
+          </Route>
+        ))}
+      </div>
+    );
+  }
 }
 
 export default Addres;

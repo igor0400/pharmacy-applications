@@ -1,4 +1,7 @@
 .under-footer {
-   height: 80px;
-   width: 100%;
+  height: 80px;
+  width: 100%;
+}
+.app {
+  min-width: 320px;
 }
