@@ -1,12 +1,9 @@
 import { Route } from 'react-router-dom';
-import axios from 'axios';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
+import useApplicationsService from '../../services/ApplicationsService';
 
 import { StartPopup, EndBtn, DeleteBtn } from '../popups/problemIdPopups';
-
 import './problemId.css';
-
-import { linkToFirebase } from '../../services/dbLinks';
 
 import greenPlus from '../../img/icons/green-plus.svg';
 import bluePlus from '../../img/icons/blue-plus.svg';
@@ -20,26 +17,23 @@ import problemgreen from '../../img/icons/green.svg';
 import lightPrioritet from '../../img/icons/alert-error.svg';
 import redPrioritet from '../../img/icons/alert-error-red.svg';
 
-class ProblemId extends Component {
-  state = {
-    applications: [],
-  };
+const ProblemId = (props) => {
+  const [applications, setApplications] = useState([]);
+  const { getApplications } = useApplicationsService();
 
-  componentDidMount() {
-    axios
-      .get(`${linkToFirebase}/${this.props.dbLink}.json`)
-      .then((response) => {
-        const applications = this.state.applications;
+  useEffect(() => {
+    getApplications(props.dbLink).then((response) => {
+      const data = [];
 
-        for (let key in response.data) {
-          applications.push({ ...response.data[key], id: key });
-        }
+      for (let key in response) {
+        data.push({ ...response[key], id: key });
+      }
 
-        this.setState({ applications });
-      });
-  }
+      setApplications(data);
+    });
+  }, []);
 
-  stylesAddres(arr) {
+  const stylesAddres = (arr) => {
     let style;
 
     if (arr.substring(0, 2) === 'АД') {
@@ -49,9 +43,9 @@ class ProblemId extends Component {
     }
 
     return style;
-  }
+  };
 
-  imgAddres(arr) {
+  const imgAddres = (arr) => {
     let img;
 
     if (arr.substring(0, 2) === 'АД') {
@@ -61,9 +55,9 @@ class ProblemId extends Component {
     }
 
     return img;
-  }
+  };
 
-  imgText(arr) {
+  const imgText = (arr) => {
     let imgText;
 
     if (arr === 'Cрочно') {
@@ -73,9 +67,9 @@ class ProblemId extends Component {
     }
 
     return imgText;
-  }
+  };
 
-  stylesText(arr) {
+  const stylesText = (arr) => {
     let styles;
 
     if (arr === 'Cрочно') {
@@ -83,9 +77,9 @@ class ProblemId extends Component {
     }
 
     return styles;
-  }
+  };
 
-  pharmacyName(arr) {
+  const pharmacyName = (arr) => {
     let name;
 
     if (arr.substring(0, 2) === 'АД') {
@@ -109,9 +103,9 @@ class ProblemId extends Component {
     }
 
     return name;
-  }
+  };
 
-  statusIcon(arr) {
+  const statusIcon = (arr) => {
     let img;
 
     if (arr === 'Не принято') {
@@ -123,9 +117,9 @@ class ProblemId extends Component {
     }
 
     return img;
-  }
+  };
 
-  prioritetIcon(arr) {
+  const prioritetIcon = (arr) => {
     let img;
 
     if (arr === 'Cрочно') {
@@ -135,9 +129,9 @@ class ProblemId extends Component {
     }
 
     return img;
-  }
+  };
 
-  dateDone() {
+  const dateDone = () => {
     function plusZero(value) {
       if (value < 10) {
         value = '0' + value;
@@ -154,116 +148,121 @@ class ProblemId extends Component {
     const seconds = plusZero(now.getSeconds());
 
     return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-  }
+  };
 
-  render() {
-    return (
-      <div className="problemIdCard">
-        {this.state.applications.map((arr, i) => (
-          <Route
-            key={i}
-            exact
-            path={`/${this.props.pathLink}/${arr.city}/${arr.addres}/${arr.id}`}
-          >
-            <div className="problemIdCard-wrapper">
-              <div className="problemIdCard-top">
-                <div className="problemIdCard-top-title flex">
-                  <img
-                    className="m-4-3"
-                    src={this.imgAddres(arr.addres)}
-                    alt="plus"
-                  />
-                  <h5 className="m-0" style={this.stylesAddres(arr.addres)}>
-                    {arr.addres}
-                  </h5>
-                </div>
-                <div className="problemIdCard-top-city flex">
-                  <img src={city} alt="city" />
-                  <p className="m-0">{arr.city}</p>
-                </div>
-                <div className="problemIdCard-top-descr flex">
-                  <img
-                    className="m-6-3"
-                    src={this.imgText(arr.prioritet)}
-                    alt="lightning"
-                  />
-                  <p className="m-0" style={this.stylesText(arr.prioritet)}>
-                    {arr.problem}
-                  </p>
-                </div>
-                <div className="problemIdCard-top-btns">
-                  <StartPopup
-                    dbLink={this.props.dbLink}
-                    id={arr.id2}
-                    data={{ ...arr, status: 'В процессе' }}
-                  />
-                  <EndBtn
-                    dbLink={this.props.dbLink}
-                    id={arr.id2}
-                    data={{
-                      ...arr,
-                      status: 'Выполнено',
-                      dateDone: this.dateDone(),
-                    }}
-                  />
-                  <DeleteBtn dbLink={this.props.dbLink} id={arr.id2} />
-                </div>
+  return (
+    <div className="problemIdCard">
+      {applications.map((arr, i) => (
+        <Route
+          key={i}
+          exact
+          path={`/${props.pathLink}/${arr.city}/${arr.addres}/${arr.id}`}
+        >
+          <div className="problemIdCard-wrapper">
+            <div className="problemIdCard-top">
+              <div className="problemIdCard-top-title flex">
+                <img className="m-4-3" src={imgAddres(arr.addres)} alt="plus" />
+                <h5 className="m-0" style={stylesAddres(arr.addres)}>
+                  {arr.addres}
+                </h5>
               </div>
-              <div className="problemIdCard-bottom">
-                <p className="fz-10 m-0">Аптечная сеть</p>
-                <div className="default">{this.pharmacyName(arr.addres)}</div>
-                <p className="fz-10 m-0">Статус выполнения</p>
-                <div className="problemIdCard-bottom-status flex">
-                  <img
-                    src={this.statusIcon(arr.status)}
-                    alt="status"
-                    className="m-0-3"
-                  />
-                  <p className="m-0">{arr.status}</p>
-                </div>
-
-                {arr.dateDone ? (
-                  <>
-                    <p className="fz-10 m-0">Время выполнения</p>
-                    <div className="problemIdCard-bottom-date">
-                      {arr.dateDone}
-                    </div>
-                  </>
-                ) : null}
-
-                <p className="fz-10 m-0">Срочность</p>
-                <div className="problemIdCard-bottom-prioritet flex">
-                  <img
-                    src={this.prioritetIcon(arr.prioritet)}
-                    alt="prioritet"
-                    className="m-3-3"
-                  />
-                  <p className="m-0">{arr.prioritet}</p>
-                </div>
-                <p className="fz-10 m-0">Ф. И. О.</p>
-                <div className="default flex">
-                  <p className="m-0">{arr.name}</p>
-                </div>
-                <p className="fz-10 m-0">Должность</p>
-                <div className="default flex">
-                  <p className="m-0">{arr.position}</p>
-                </div>
-                <p className="fz-10 m-0">Номер телефона</p>
-                <div className="default flex">
-                  <p className="m-0">{arr.phone}</p>
-                </div>
-                <p className="fz-10 m-0">Заявка от</p>
-                <div className="default flex">
-                  <img src={clock} alt="clock" className="m-3-3" />
-                  <p className="m-0">{arr.date}</p>
-                </div>
+              <div className="problemIdCard-top-city flex">
+                <img src={city} alt="city" />
+                <p className="m-0">{arr.city}</p>
+              </div>
+              <div className="problemIdCard-top-descr flex">
+                <img
+                  className="m-6-3"
+                  src={imgText(arr.prioritet)}
+                  alt="lightning"
+                />
+                <p className="m-0" style={stylesText(arr.prioritet)}>
+                  {arr.problem}
+                </p>
+              </div>
+              <div className="problemIdCard-top-btns">
+                <StartPopup
+                  dbLink={props.dbLink}
+                  id={arr.id2}
+                  data={{ ...arr, status: 'В процессе', dateDone: dateDone() }}
+                />
+                <EndBtn
+                  dbLink={props.dbLink}
+                  id={arr.id2}
+                  data={{
+                    ...arr,
+                    status: 'Выполнено',
+                    dateDone: dateDone(),
+                  }}
+                />
+                <DeleteBtn dbLink={props.dbLink} id={arr.id2} />
               </div>
             </div>
-          </Route>
-        ))}
-      </div>
-    );
-  }
-}
+            <div className="problemIdCard-bottom">
+              <p className="fz-10 m-0">Аптечная сеть</p>
+              <div className="default">{pharmacyName(arr.addres)}</div>
+              <p className="fz-10 m-0">Статус выполнения</p>
+              <div className="problemIdCard-bottom-status flex">
+                <img
+                  src={statusIcon(arr.status)}
+                  alt="status"
+                  className="m-0-3"
+                />
+                <p className="m-0">{arr.status}</p>
+              </div>
+
+              {arr.dateDone ? (
+                <>
+                  {arr.status === 'В процессе' ? (
+                    <>
+                      <p className="fz-10 m-0">Начало выполнения</p>
+                      <div className="problemIdCard-bottom-date">
+                        {arr.dateDone}
+                      </div>
+                    </>
+                  ) : arr.status === 'Выполнено' ? (
+                    <>
+                      <p className="fz-10 m-0">Время выполнения</p>
+                      <div className="problemIdCard-bottom-date">
+                        {arr.dateDone}
+                      </div>
+                    </>
+                  ) : null}
+                </>
+              ) : null}
+
+              <p className="fz-10 m-0">Срочность</p>
+              <div className="problemIdCard-bottom-prioritet flex">
+                <img
+                  src={prioritetIcon(arr.prioritet)}
+                  alt="prioritet"
+                  className="m-3-3"
+                />
+                <p className="m-0">{arr.prioritet}</p>
+              </div>
+              <p className="fz-10 m-0">Ф. И. О.</p>
+              <div className="default flex">
+                <p className="m-0">{arr.name}</p>
+              </div>
+              <p className="fz-10 m-0">Должность</p>
+              <div className="default flex">
+                <p className="m-0">{arr.position}</p>
+              </div>
+              <p className="fz-10 m-0">Номер телефона</p>
+              <div className="default flex">
+                <p className="m-0">{arr.phone}</p>
+              </div>
+              <p className="fz-10 m-0">Заявка от</p>
+              <div className="default flex">
+                <img src={clock} alt="clock" className="m-3-3" />
+                <p className="m-0">{arr.date}</p>
+              </div>
+            </div>
+          </div>
+        </Route>
+      ))}
+    </div>
+  );
+};
 
 export default ProblemId;

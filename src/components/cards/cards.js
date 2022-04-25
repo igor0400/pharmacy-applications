@@ -1,55 +1,44 @@
-import { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 
 import './cards.css';
 
-class Cards extends Component {
-   imgText() {
-      let imgText;
+const Cards = (props) => {
+  const imgText = () => {
+    let imgText;
 
-      if (this.props.prioritet === 'Cрочно') {
-         imgText = this.props.imgPrioritet;
-      } else {
-         imgText = this.props.imgText;
-      }
+    if (props.prioritet === 'Cрочно') {
+      imgText = props.imgPrioritet;
+    } else {
+      imgText = props.imgText;
+    }
 
-      return imgText;
-   }
+    return imgText;
+  };
 
-   styles() {
-      let styles;
+  const styles = () => {
+    let styles;
 
-      if (this.props.prioritet === 'Cрочно') {
-         styles = { color: '#C55300' };
-      }
+    if (props.prioritet === 'Cрочно') {
+      styles = { color: '#C55300' };
+    }
 
-      return styles;
-   }
+    return styles;
+  };
 
-   render() {
-      return (
-         <Card className="cards">
-            <Card.Body>
-               <Card.Title style={{ fontSize: '17px', margin: '0 0 5px' }}>
-                  <img
-                     src={this.props.imgTitle}
-                     alt="clock"
-                     className="cards-img1"
-                  />
-                  {this.props.title}
-               </Card.Title>
-               <Card.Text className="flex" style={this.styles()}>
-                  <img
-                     src={this.imgText()}
-                     alt="clock"
-                     className="cards-img2"
-                  />
-                  {this.props.text}
-               </Card.Text>
-            </Card.Body>
-         </Card>
-      );
-   }
-}
+  return (
+    <Card className="cards">
+      <Card.Body>
+        <Card.Title style={{ fontSize: '17px', margin: '0 0 5px' }}>
+          <img src={props.imgTitle} alt="clock" className="cards-img1" />
+          {props.title}
+        </Card.Title>
+        <Card.Text className="flex" style={styles()}>
+          <img src={imgText()} alt="clock" className="cards-img2" />
+          {props.text}
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  );
+};
 
 export default Cards;

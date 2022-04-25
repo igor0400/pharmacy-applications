@@ -1,11 +1,10 @@
 import { Route } from 'react-router-dom';
 
-import Cities from '../cities/cities';
+import Cities from '../cities/Cities';
 import Addres from '../addres/addres';
 import Problems from '../problems/problems';
 import ProblemId from '../problemId/problemId';
 
-// Эти ссылки еще где то используются, так как они экспортированы
 const dbLinkAll = 'all';
 const dbLinkUnaccepted = 'unaccepted';
 const dbLinkInProgress = 'inProgress';

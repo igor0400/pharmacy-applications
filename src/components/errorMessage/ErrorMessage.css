@@ -1,0 +1,15 @@
+.error {
+  text-align: center;
+  width: 320px;
+  margin: 40px auto 0;
+}
+
+.error img {
+  width: 200px;
+  height: 200px;
+}
+
+.error p {
+  margin: 10px 0 0 0;
+  color: gray;
+}

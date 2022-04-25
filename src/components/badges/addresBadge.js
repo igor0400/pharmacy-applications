@@ -1,61 +1,50 @@
-import axios from 'axios';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
+import useApplicationsService from '../../services/ApplicationsService';
 
-import { linkToFirebase } from '../../services/dbLinks';
+import LoadingSmall from '../loading/LoadingSmall';
 
-class AddresBadge extends Component {
-  state = {
-    applications: [],
-    addresCount: [],
-    cities: {},
-  };
+const AddresBadge = (props) => {
+  const [addresCount, setAddresCount] = useState([]);
+  const { loading, getApplications } = useApplicationsService();
 
-  componentDidMount() {
-    axios
-      .get(`${linkToFirebase}/${this.props.dbLink}.json`)
-      .then((response) => {
-        const applications = this.state.applications;
+  useEffect(() => {
+    getApplications(props.dbLink).then((res) => {
+      const applications = [];
 
-        for (let key in response.data) {
-          applications.push({ ...response.data[key], id: key });
+      for (let key in res) {
+        applications.push({ ...res[key], id: key });
+      }
+
+      const citiesArr = {};
+
+      for (const cityInfo of applications) {
+        if (citiesArr.hasOwnProperty(cityInfo.city)) {
+          citiesArr[cityInfo.city].push(cityInfo);
+        } else {
+          citiesArr[cityInfo.city] = [cityInfo];
         }
+      }
 
-        this.setState({ applications });
+      const addresCountObj = citiesArr[props.city].reduce((a, b) => {
+        a[b.addres] = (a[b.addres] || 0) + 1;
 
-        const cities = this.state.cities;
+        return a;
+      }, {});
 
-        for (const cityInfo of this.state.applications) {
-          if (cities.hasOwnProperty(cityInfo.city)) {
-            cities[cityInfo.city].push(cityInfo);
-          } else {
-            cities[cityInfo.city] = [cityInfo];
-          }
-        }
+      const newArray2 = [];
+      newArray2.push(addresCountObj);
+      setAddresCount(newArray2);
+    });
+  }, []);
 
-        this.setState({ cities });
+  const spinner = loading ? <LoadingSmall /> : null;
 
-        const addresCount = this.state.cities[this.props.city].reduce(
-          (a, b) => {
-            a[b.addres] = (a[b.addres] || 0) + 1;
-
-            return a;
-          },
-          {}
-        );
-
-        const newArray2 = this.state.addresCount;
-        newArray2.push(addresCount);
-        this.setState({ addresCount: newArray2 });
-      });
-  }
-
-  render() {
-    return (
-      <div>
-        {this.state.addresCount.map((item) => item[this.props.addres])[0]}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {spinner}
+      {!loading ? addresCount.map((item) => item[props.addres])[0] : null}
+    </div>
+  );
+};
 
 export default AddresBadge;

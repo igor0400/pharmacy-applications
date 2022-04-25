@@ -1,62 +1,54 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Component } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+import useApplicationsService from '../../services/ApplicationsService';
 
 import AddresBadge from '../badges/addresBadge';
 import AppItemAddres from '../appItem/appItemAddres';
-import { linkToFirebase } from '../../services/dbLinks';
 
 import greenPlus from '../../img/icons/green-plus.svg';
 import bluePlus from '../../img/icons/blue-plus.svg';
 
-class Addres extends Component {
-  state = {
-    applications: [],
-    addres: [],
-    cities: {},
-  };
+const Addres = (props) => {
+  const [addres, setAddres] = useState([]);
+  const { getApplications } = useApplicationsService();
 
-  componentDidMount() {
-    axios
-      .get(`${linkToFirebase}/${this.props.dbLink}.json`)
-      .then((response) => {
-        const applications = this.state.applications;
+  useEffect(() => {
+    getApplications(props.dbLink).then((response) => {
+      const applications = [];
 
-        for (let key in response.data) {
-          applications.push({ ...response.data[key], id: key });
+      for (let key in response) {
+        applications.push({ ...response[key], id: key });
+      }
+
+      const cities = [];
+
+      for (const cityInfo of applications) {
+        if (cities.hasOwnProperty(cityInfo.city)) {
+          cities[cityInfo.city].push(cityInfo);
+        } else {
+          cities[cityInfo.city] = [cityInfo];
         }
+      }
 
-        this.setState({ applications });
+      const newArray = [];
+      for (let key in cities) {
+        cities[key].reduce((acc, addres) => {
+          if (acc[addres.addres]) return acc;
 
-        const cities = this.state.cities;
+          acc[addres.addres] = true;
 
-        for (const cityInfo of this.state.applications) {
-          if (cities.hasOwnProperty(cityInfo.city)) {
-            cities[cityInfo.city].push(cityInfo);
-          } else {
-            cities[cityInfo.city] = [cityInfo];
-          }
-        }
+          newArray.push(addres);
 
-        this.setState({ cities });
+          return acc;
+        }, {});
+      }
+      setAddres(newArray);
+    });
+  }, []);
 
-        for (let key in cities) {
-          cities[key].reduce((acc, addres) => {
-            if (acc[addres.addres]) return acc;
-
-            acc[addres.addres] = true;
-            const newArray = this.state.addres;
-            newArray.push(addres);
-            this.setState({ addres: newArray });
-            return acc;
-          }, {});
-        }
-      });
-  }
-
-  styles(arr) {
+  const styles = (arr) => {
     let style;
 
     if (arr.substring(0, 2) === 'АД') {
@@ -66,9 +58,9 @@ class Addres extends Component {
     }
 
     return style;
-  }
+  };
 
-  img(arr) {
+  const img = (arr) => {
     let img;
 
     if (arr.substring(0, 2) === 'АД') {
@@ -78,37 +70,35 @@ class Addres extends Component {
     }
 
     return img;
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        {this.state.addres.map((arr, i) => (
-          <Route key={i} exact path={`/${this.props.pathLink}/${arr.city}`}>
-            <ListGroup variant="flush">
-              <Link
-                to={`/${this.props.pathLink}/${arr.city}/${arr.addres}`}
-                className="a"
-              >
-                <AppItemAddres
-                  text={arr.addres}
-                  stylesArr={this.styles(arr.addres)}
-                  img={this.img(arr.addres)}
-                  badge={
-                    <AddresBadge
-                      city={arr.city}
-                      addres={arr.addres}
-                      dbLink={this.props.dbLink}
-                    />
-                  }
-                />
-              </Link>
-            </ListGroup>
-          </Route>
-        ))}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {addres.map((arr, i) => (
+        <Route key={i} exact path={`/${props.pathLink}/${arr.city}`}>
+          <ListGroup variant="flush">
+            <Link
+              to={`/${props.pathLink}/${arr.city}/${arr.addres}`}
+              className="a"
+            >
+              <AppItemAddres
+                text={arr.addres}
+                stylesArr={styles(arr.addres)}
+                img={img(arr.addres)}
+                badge={
+                  <AddresBadge
+                    city={arr.city}
+                    addres={arr.addres}
+                    dbLink={props.dbLink}
+                  />
+                }
+              />
+            </Link>
+          </ListGroup>
+        </Route>
+      ))}
+    </div>
+  );
+};
 
 export default Addres;

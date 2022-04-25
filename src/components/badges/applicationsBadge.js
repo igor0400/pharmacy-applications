@@ -1,30 +1,32 @@
-import axios from 'axios';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
+import useApplicationsService from '../../services/ApplicationsService';
 
-import { linkToFirebase } from '../../services/dbLinks';
+import LoadingSmall from '../loading/LoadingSmall';
 
-class ApplicationsBadge extends Component {
-  state = {
-    applications: [],
-  };
+const ApplicationsBadge = (props) => {
+  const [applications, setApplications] = useState([]);
+  const { loading, getApplications } = useApplicationsService();
 
-  componentDidMount() {
-    axios
-      .get(`${linkToFirebase}/${this.props.dbLink}.json`)
-      .then((response) => {
-        const applications = this.state.applications;
+  useEffect(() => {
+    getApplications(props.dbLink).then((res) => {
+      const applicationsRes = [];
 
-        for (let key in response.data) {
-          applications.push({ ...response.data[key], id: key });
-        }
+      for (let key in res) {
+        applicationsRes.push({ ...res[key], id: key });
+      }
 
-        this.setState({ applications });
-      });
-  }
+      setApplications(applicationsRes);
+    });
+  }, []);
 
-  render() {
-    return <div>{this.state.applications.length}</div>;
-  }
-}
+  const spinner = loading ? <LoadingSmall /> : null;
+
+  return (
+    <div>
+      {spinner}
+      {!loading ? applications.length : null}
+    </div>
+  );
+};
 
 export default ApplicationsBadge;
