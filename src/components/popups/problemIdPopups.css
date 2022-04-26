@@ -1,12 +1,11 @@
-.tresh-btn {
-   width: 40px;
-   height: 40px;
-   background: rgba(112, 112, 112, 0.3);
-   border-radius: 50px;
-   padding: 7px 0 0 10px;
-   cursor: pointer;
-}
 .tresh-btn img{
-   width: 20px;
-   height: 20px;
+   width: 17px;
+   height: 17px;
+   margin: -5px 0 0 10px;
+}
+.modal-body-main-popup {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  gap: 10px;
+  justify-content: center;
 }

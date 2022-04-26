@@ -2,7 +2,11 @@ import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useApplicationsService from '../../services/ApplicationsService';
 
-import { StartPopup, EndBtn, DeleteBtn } from '../popups/problemIdPopups';
+import { MainPopup } from '../popups/problemIdPopups';
+
+// firebase
+import { storage } from '../../firebase';
+
 import './problemId.css';
 
 import greenPlus from '../../img/icons/green-plus.svg';
@@ -14,6 +18,7 @@ import lightningPrioritet from '../../img/icons/lightning-prioritet.svg';
 import problemred from '../../img/icons/red.svg';
 import problemyellow from '../../img/icons/yellow.svg';
 import problemgreen from '../../img/icons/green.svg';
+import problemgrey from '../../img/icons/grey.svg';
 import lightPrioritet from '../../img/icons/alert-error.svg';
 import redPrioritet from '../../img/icons/alert-error-red.svg';
 
@@ -69,16 +74,6 @@ const ProblemId = (props) => {
     return imgText;
   };
 
-  const stylesText = (arr) => {
-    let styles;
-
-    if (arr === 'Cрочно') {
-      styles = { color: '#C55300' };
-    }
-
-    return styles;
-  };
-
   const pharmacyName = (arr) => {
     let name;
 
@@ -114,6 +109,8 @@ const ProblemId = (props) => {
       img = problemyellow;
     } else if (arr === 'Выполнено') {
       img = problemgreen;
+    } else if (arr === 'Отклонено') {
+      img = problemgrey;
     }
 
     return img;
@@ -161,7 +158,7 @@ const ProblemId = (props) => {
           <div className="problemIdCard-wrapper">
             <div className="problemIdCard-top">
               <div className="problemIdCard-top-title flex">
-                <img className="m-4-3" src={imgAddres(arr.addres)} alt="plus" />
+                <img src={imgAddres(arr.addres)} alt="plus" />
                 <h5 className="m-0" style={stylesAddres(arr.addres)}>
                   {arr.addres}
                 </h5>
@@ -176,32 +173,33 @@ const ProblemId = (props) => {
                   src={imgText(arr.prioritet)}
                   alt="lightning"
                 />
-                <p className="m-0" style={stylesText(arr.prioritet)}>
-                  {arr.problem}
-                </p>
+                <p className="m-0">{arr.problem}</p>
               </div>
-              <div className="problemIdCard-top-btns">
-                <StartPopup
-                  dbLink={props.dbLink}
-                  id={arr.id2}
-                  data={{ ...arr, status: 'В процессе', dateDone: dateDone() }}
-                />
-                <EndBtn
-                  dbLink={props.dbLink}
-                  id={arr.id2}
-                  data={{
-                    ...arr,
-                    status: 'Выполнено',
-                    dateDone: dateDone(),
-                  }}
-                />
-                <DeleteBtn dbLink={props.dbLink} id={arr.id2} />
-              </div>
+              <MainPopup
+                dbLink={props.dbLink}
+                linkForImg={`${arr.city} ${arr.addres} ${arr.id2}`}
+                id={arr.id2}
+                idFirebase={arr.id}
+                startData={{
+                  ...arr,
+                  status: 'В процессе',
+                  dateDone: dateDone(),
+                }}
+                endData={{
+                  ...arr,
+                  status: 'Выполнено',
+                  dateDone: dateDone(),
+                }}
+                rejectedData={{
+                  ...arr,
+                  status: 'Отклонено',
+                }}
+              />
             </div>
             <div className="problemIdCard-bottom">
-              <p className="fz-10 m-0">Аптечная сеть</p>
+              <p className="fz-12 m-0">Аптечная сеть</p>
               <div className="default">{pharmacyName(arr.addres)}</div>
-              <p className="fz-10 m-0">Статус выполнения</p>
+              <p className="fz-12 m-0">Статус выполнения</p>
               <div className="problemIdCard-bottom-status flex">
                 <img
                   src={statusIcon(arr.status)}
@@ -210,19 +208,18 @@ const ProblemId = (props) => {
                 />
                 <p className="m-0">{arr.status}</p>
               </div>
-
               {arr.dateDone ? (
                 <>
                   {arr.status === 'В процессе' ? (
                     <>
-                      <p className="fz-10 m-0">Начало выполнения</p>
+                      <p className="fz-12 m-0">Начало выполнения</p>
                       <div className="problemIdCard-bottom-date">
                         {arr.dateDone}
                       </div>
                     </>
                   ) : arr.status === 'Выполнено' ? (
                     <>
-                      <p className="fz-10 m-0">Время выполнения</p>
+                      <p className="fz-12 m-0">Время выполнения</p>
                       <div className="problemIdCard-bottom-date">
                         {arr.dateDone}
                       </div>
@@ -231,7 +228,7 @@ const ProblemId = (props) => {
                 </>
               ) : null}
 
-              <p className="fz-10 m-0">Срочность</p>
+              <p className="fz-12 m-0">Срочность</p>
               <div className="problemIdCard-bottom-prioritet flex">
                 <img
                   src={prioritetIcon(arr.prioritet)}
@@ -240,19 +237,31 @@ const ProblemId = (props) => {
                 />
                 <p className="m-0">{arr.prioritet}</p>
               </div>
-              <p className="fz-10 m-0">Ф. И. О.</p>
+
+              {arr.comment ? (
+                <>
+                  <p className="fz-12 m-0">Комментарий</p>
+                  <div className="default flex">
+                    <p className="m-0">{arr.comment}</p>
+                  </div>
+                </>
+              ) : null}
+
+              <Images linkToFolder={`${arr.city} ${arr.addres} ${arr.id2}`} />
+
+              <p className="fz-12 m-0">Ф. И. О.</p>
               <div className="default flex">
                 <p className="m-0">{arr.name}</p>
               </div>
-              <p className="fz-10 m-0">Должность</p>
+              <p className="fz-12 m-0">Должность</p>
               <div className="default flex">
                 <p className="m-0">{arr.position}</p>
               </div>
-              <p className="fz-10 m-0">Номер телефона</p>
+              <p className="fz-12 m-0">Номер телефона</p>
               <div className="default flex">
                 <p className="m-0">{arr.phone}</p>
               </div>
-              <p className="fz-10 m-0">Заявка от</p>
+              <p className="fz-12 m-0">Заявка от</p>
               <div className="default flex">
                 <img src={clock} alt="clock" className="m-3-3" />
                 <p className="m-0">{arr.date}</p>
@@ -264,5 +273,36 @@ const ProblemId = (props) => {
     </div>
   );
 };
+
+function Images(props) {
+  const [links, setLinks] = useState([]);
+
+  useEffect(() => {
+    storage
+      .ref(props.linkToFolder)
+      .listAll()
+      .then((result) => {
+        const promises = [];
+        result.items.forEach((imageRef) => {
+          promises.push(imageRef.getDownloadURL());
+        });
+        return Promise.all(promises);
+      })
+      .then((urlsArray) => {
+        setLinks(urlsArray);
+      });
+  }, []);
+
+  return (
+    <div className="images">
+      {links.map((item, i) => (
+        <div key={i}>
+          <p className="images-title fz-12">Фото №{i + 1} о выполнении</p>
+          <img src={item} className="images-img" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default ProblemId;

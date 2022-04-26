@@ -1,21 +1,26 @@
 import { Link } from 'react-router-dom';
-import { useState, Component } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
+//react-bootstrap
 import Modal from 'react-bootstrap/Modal';
 import ModalHeader from 'react-bootstrap/ModalHeader';
 import ModalBody from 'react-bootstrap/ModalBody';
 import ModalFooter from 'react-bootstrap/ModalFooter';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
+import Form from 'react-bootstrap/Form';
 
 import {
   dbLinkAll,
+  dbLinkRejected,
   dbLinkUnaccepted,
   dbLinkInProgress,
   dbLinkDone,
 } from '../getElements/getElements';
 
+//firebase
 import { linkToFirebase } from '../../services/dbLinks';
+import { storage } from '../../firebase';
 
 import tresh from '../../img/icons/alternate-trash.svg';
 
@@ -23,6 +28,7 @@ import './problemIdPopups.css';
 
 const StartPopup = (props) => {
   const [show, setShow] = useState(false);
+  const [input, setInput] = useState(null);
 
   const deleteProblem = (dbLink) => {
     axios.get(`${dbLink}.json`).then((response) => {
@@ -46,6 +52,7 @@ const StartPopup = (props) => {
 
   const transferProdlem = async () => {
     await deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkRejected}`);
     await deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
     await deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
     await axios
@@ -68,12 +75,29 @@ const StartPopup = (props) => {
           });
 
         await axios
-          .post(`${linkToFirebase}/${dbLinkAll}.json`, props.data)
+          .post(`${linkToFirebase}/${dbLinkAll}.json`, {
+            ...props.data,
+            comment: input,
+          })
           .catch(() => alert('Не удалось переместить заявку'));
         await axios
-          .post(`${linkToFirebase}/${dbLinkInProgress}.json`, props.data)
+          .post(`${linkToFirebase}/${dbLinkInProgress}.json`, {
+            ...props.data,
+            comment: input,
+          })
           .then(() => alert('Заявка перешла в раздел "в процессе"'))
           .catch(() => alert('Не удалось переместить заявку'));
+      });
+  };
+
+  const imagesDelete = () => {
+    storage
+      .ref(`${props.linkForImg}`)
+      .listAll()
+      .then((res) => {
+        res.items.forEach((item) => {
+          storage.ref(item.location.path_).delete();
+        });
       });
   };
 
@@ -92,6 +116,12 @@ const StartPopup = (props) => {
         <ModalBody>
           Заявка перейдет в раздел "в процессе" и ей будет присвоен
           соответствующий статус о выполнении
+          <Form.Control
+            type="text"
+            placeholder="Комментарий"
+            style={{ marginTop: '28px' }}
+            onChange={(e) => setInput(e.target.value)}
+          />
         </ModalBody>
         <ModalFooter style={{ border: 'none' }}>
           <Button variant="secondary" onClick={() => setShow(false)}>
@@ -102,6 +132,304 @@ const StartPopup = (props) => {
               variant="primary"
               onClick={async () => {
                 setShow(false);
+                await imagesDelete();
+                await transferProdlem();
+                await window.location.reload();
+              }}
+            >
+              Подтвердить
+            </Button>
+          </Link>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+};
+
+const EndBtn = (props) => {
+  const [show, setShow] = useState(false);
+  const [image, setImage] = useState({});
+  const [num, setNum] = useState(0);
+  const [input, setInput] = useState(null);
+
+  const deleteProblem = async (dbLink) => {
+    axios.get(`${dbLink}.json`).then((response) => {
+      const applications = [];
+
+      for (let key in response.data) {
+        applications.push({ ...response.data[key], id: key });
+      }
+
+      applications
+        .filter((arr) => {
+          if (arr.id2 === props.id) {
+            return arr;
+          }
+        })
+        .forEach((arr) => {
+          axios.delete(`${dbLink}/${arr.id}.json`);
+        });
+    });
+  };
+
+  const transferProdlem = async () => {
+    await deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkRejected}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
+    await axios
+      .get(`${linkToFirebase}/${dbLinkDone}.json`)
+      .then(async (response) => {
+        const applications = [];
+
+        for (let key in response.data) {
+          applications.push({ ...response.data[key], id: key });
+        }
+
+        await applications
+          .filter((arr) => {
+            if (arr.id2 === props.id) {
+              return arr;
+            }
+          })
+          .forEach(async (arr) => {
+            await axios.delete(
+              `${linkToFirebase}/${dbLinkDone}/${arr.id}.json`
+            );
+          });
+
+        await axios
+          .post(`${linkToFirebase}/${dbLinkAll}.json`, {
+            ...props.data,
+            comment: input,
+          })
+          .catch(() => alert('Не удалось переместить заявку'));
+        await axios
+          .post(`${linkToFirebase}/${dbLinkDone}.json`, {
+            ...props.data,
+            comment: input,
+          })
+          .then(() => {
+            alert('Заявка перешла в раздел "выполнено"');
+          })
+          .catch(() => {
+            alert('Не удалось переместить заявку');
+          });
+      });
+  };
+
+  const imgHandleChange = (e) => {
+    if (e.target.files[0]) {
+      setImage({ ...image, [num]: e.target.files[0] });
+      setNum(num + 1);
+    }
+  };
+  const imgHandleUpload = async () => {
+    await storage
+      .ref(`${props.linkForImg}`)
+      .listAll()
+      .then((res) => {
+        res.items.forEach((item) => {
+          storage.ref(item.location.path_).delete();
+        });
+      });
+
+    const setFireRef = (i) => {
+      if (image[i]) {
+        storage.ref(`${props.linkForImg}/${image[i].name}`).put(image[i]);
+      }
+    };
+
+    for (let i = 0; i < 7; i++) {
+      setFireRef(i);
+    }
+  };
+
+  return (
+    <>
+      <Button
+        variant="light"
+        onClick={() => setShow(true)}
+        style={{ boxShadow: 'none' }}
+      >
+        Закончить выполнение
+      </Button>
+
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Прикрепите фото</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Заявка перейдет в раздел "выполнено"
+          <Form.Control
+            type="text"
+            placeholder="Комментарий"
+            style={{ marginTop: '28px' }}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <Form.Control
+            type="file"
+            onChange={imgHandleChange}
+            style={{ marginTop: '15px' }}
+          />
+          <Form.Control
+            type="file"
+            onChange={imgHandleChange}
+            style={{ marginTop: '15px' }}
+          />
+          <Form.Control
+            type="file"
+            onChange={imgHandleChange}
+            style={{ marginTop: '15px' }}
+          />
+          <Form.Control
+            type="file"
+            onChange={imgHandleChange}
+            style={{ marginTop: '15px' }}
+          />
+          <Form.Control
+            type="file"
+            onChange={imgHandleChange}
+            style={{ marginTop: '15px' }}
+          />
+          <Form.Control
+            type="file"
+            onChange={imgHandleChange}
+            style={{ margin: '15px 0 12px 0' }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Отмена
+          </Button>
+          <Link to="/">
+            <Button
+              variant="primary"
+              onClick={async () => {
+                setShow(false);
+                await imgHandleUpload();
+                await transferProdlem();
+                await setTimeout(() => {
+                  window.location.reload();
+                }, 500);
+              }}
+            >
+              Подтвердить
+            </Button>
+          </Link>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
+
+const RejectedPopup = (props) => {
+  const [show, setShow] = useState(false);
+  const [input, setInput] = useState(null);
+
+  const deleteProblem = (dbLink) => {
+    axios.get(`${dbLink}.json`).then((response) => {
+      const applications = [];
+
+      for (let key in response.data) {
+        applications.push({ ...response.data[key], id: key });
+      }
+
+      applications
+        .filter((arr) => {
+          if (arr.id2 === props.id) {
+            return arr;
+          }
+        })
+        .forEach((arr) => {
+          axios.delete(`${dbLink}/${arr.id}.json`);
+        });
+    });
+  };
+
+  const transferProdlem = async () => {
+    await deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkRejected}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
+    await axios
+      .get(`${linkToFirebase}/${dbLinkDone}.json`)
+      .then(async (response) => {
+        const applications = [];
+
+        for (let key in response.data) {
+          applications.push({ ...response.data[key], id: key });
+        }
+
+        await applications
+          .filter((arr) => {
+            if (arr.id2 === props.id) {
+              return arr;
+            }
+          })
+          .forEach((arr) => {
+            axios.delete(`${linkToFirebase}/${dbLinkDone}/${arr.id}.json`);
+          });
+
+        await axios
+          .post(`${linkToFirebase}/${dbLinkAll}.json`, {
+            ...props.data,
+            comment: input,
+          })
+          .catch(() => alert('Не удалось переместить заявку'));
+        await axios
+          .post(`${linkToFirebase}/${dbLinkRejected}.json`, {
+            ...props.data,
+            comment: input,
+          })
+          .then(() => alert('Заявка перешла в раздел "отклоненные"'))
+          .catch(() => alert('Не удалось переместить заявку'));
+      });
+  };
+
+  const imagesDelete = () => {
+    storage
+      .ref(`${props.linkForImg}`)
+      .listAll()
+      .then((res) => {
+        res.items.forEach((item) => {
+          storage.ref(item.location.path_).delete();
+        });
+      });
+  };
+
+  return (
+    <>
+      <Button
+        variant="light"
+        onClick={() => setShow(true)}
+        style={{ boxShadow: 'none' }}
+      >
+        Отклонить
+      </Button>
+
+      <Modal show={show} onHide={() => setShow(false)}>
+        <ModalHeader closeButton style={{ border: 'none' }} />
+        <ModalBody>
+          Заявка перейдет в раздел "отклоненные" и ей будет присвоен
+          соответствующий статус о выполнении
+          <Form.Control
+            type="text"
+            placeholder="Комментарий"
+            style={{ marginTop: '28px' }}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </ModalBody>
+        <ModalFooter style={{ border: 'none' }}>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Отмена
+          </Button>
+          <Link to="/">
+            <Button
+              variant="primary"
+              onClick={async () => {
+                setShow(false);
+                await imagesDelete();
                 await transferProdlem();
                 await window.location.reload();
               }}
@@ -140,6 +468,7 @@ const DeleteBtn = (props) => {
 
   const transferProdlem = async () => {
     await deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
+    await deleteProblem(`${linkToFirebase}/${dbLinkRejected}`);
     await deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
     await deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
     await axios
@@ -164,15 +493,33 @@ const DeleteBtn = (props) => {
       .catch(() => alert('Не удалось удалить заявку'));
   };
 
+  const imagesDelete = () => {
+    storage
+      .ref(`${props.linkForImg}`)
+      .listAll()
+      .then((res) => {
+        res.items.forEach((item) => {
+          storage.ref(item.location.path_).delete();
+        });
+      });
+  };
+
   return (
     <>
-      <div onClick={() => setShow(true)} className="tresh-btn">
+      <Button
+        variant="light"
+        onClick={() => {
+          setShow(true);
+        }}
+        className="tresh-btn"
+      >
+        Удалить
         <img src={tresh} alt="tresh" />
-      </div>
+      </Button>
 
       <Modal show={show} onHide={() => setShow(false)}>
         <ModalHeader closeButton style={{ border: 'none' }} />
-        <ModalBody>
+        <ModalBody style={{paddingBottom: '60px'}}>
           Вы уверенны? Заявка будет удалена из всех разделов без возможности
           возврата
         </ModalBody>
@@ -185,9 +532,12 @@ const DeleteBtn = (props) => {
               variant="primary"
               onClick={async () => {
                 setShow(false);
+                await imagesDelete();
                 await transferProdlem();
                 await alert('Заявка удалена');
-                await window.location.reload();
+                await setTimeout(() => {
+                  window.location.reload();
+                }, 500);
               }}
             >
               Подтвердить
@@ -199,116 +549,56 @@ const DeleteBtn = (props) => {
   );
 };
 
-class EndBtn extends Component {
-  state = {
-    show: false,
-    alertText: 'Не удалось переместить заявку',
-  };
+const MainPopup = (props) => {
+  const [show, setShow] = useState(false);
 
-  handleClose() {
-    this.setState({ show: false });
-  }
-  handleShow() {
-    this.setState({ show: true });
-  }
+  return (
+    <>
+      <Button
+        variant="secondary"
+        onClick={() => setShow(true)}
+        className="tresh-btn"
+      >
+        Переместить
+      </Button>
 
-  async deleteProblem(dbLink) {
-    axios.get(`${dbLink}.json`).then((response) => {
-      const applications = [];
-
-      for (let key in response.data) {
-        applications.push({ ...response.data[key], id: key });
-      }
-
-      applications
-        .filter((arr) => {
-          if (arr.id2 === this.props.id) {
-            return arr;
-          }
-        })
-        .forEach((arr) => {
-          axios.delete(`${dbLink}/${arr.id}.json`);
-        });
-    });
-  }
-
-  async transferProdlem() {
-    await this.deleteProblem(`${linkToFirebase}/${dbLinkAll}`);
-    await this.deleteProblem(`${linkToFirebase}/${dbLinkUnaccepted}`);
-    await this.deleteProblem(`${linkToFirebase}/${dbLinkInProgress}`);
-    await axios
-      .get(`${linkToFirebase}/${dbLinkDone}.json`)
-      .then(async (response) => {
-        const applications = [];
-
-        for (let key in response.data) {
-          applications.push({ ...response.data[key], id: key });
-        }
-
-        await applications
-          .filter((arr) => {
-            if (arr.id2 === this.props.id) {
-              return arr;
-            }
-          })
-          .forEach((arr) => {
-            axios.delete(`${linkToFirebase}/${dbLinkDone}/${arr.id}.json`);
-          });
-
-        await axios
-          .post(`${linkToFirebase}/${dbLinkAll}.json`, this.props.data)
-          .catch(() => alert(this.state.alertText));
-        await axios
-          .post(`${linkToFirebase}/${dbLinkDone}.json`, this.props.data)
-          .then(() => {
-            alert('Заявка перешла в раздел "выполнено"');
-          })
-          .catch(() => {
-            alert(this.state.alertText);
-          });
-      });
-  }
-
-  render() {
-    return (
-      <>
-        <Button
-          variant="outline-dark"
-          onClick={() => this.handleShow()}
-          style={{ boxShadow: 'none' }}
+      <Modal show={show} onHide={() => setShow(false)}>
+        <ModalHeader closeButton style={{ border: 'none' }} />
+        <ModalBody
+          className="modal-body-main-popup"
+          style={{ padding: '0 10px 10px 10px' }}
         >
-          Закончить выполнение
-        </Button>
+          <StartPopup
+            onFadePopup={() => setShow(false)}
+            dbLink={props.dbLink}
+            linkForImg={props.linkForImg}
+            id={props.id}
+            data={props.startData}
+          />
+          <EndBtn
+            onFadePopup={() => setShow(false)}
+            dbLink={props.dbLink}
+            linkForImg={props.linkForImg}
+            id={props.id}
+            data={props.endData}
+          />
+          <RejectedPopup
+            onFadePopup={() => setShow(false)}
+            dbLink={props.dbLink}
+            linkForImg={props.linkForImg}
+            id={props.id}
+            data={props.rejectedData}
+          />
+          <DeleteBtn
+            onFadePopup={() => setShow(false)}
+            dbLink={props.dbLink}
+            id={props.id}
+            linkForImg={props.linkForImg}
+          />
+        </ModalBody>
+      </Modal>
+    </>
+  );
+};
 
-        <Modal show={this.state.show} onHide={() => this.handleClose()}>
-          <ModalHeader closeButton style={{ border: 'none' }} />
-          <ModalBody>
-            Заявка перейдет в раздел "выполнено" и ей будет присвоен
-            соответствующий статус о выполнении
-          </ModalBody>
-          <ModalFooter style={{ border: 'none' }}>
-            <Button variant="secondary" onClick={() => this.handleClose()}>
-              Отмена
-            </Button>
-            <Link to="/">
-              <Button
-                variant="primary"
-                onClick={async () => {
-                  this.handleClose();
-                  await this.transferProdlem();
-                  await setTimeout(() => {
-                    window.location.reload();
-                  }, 500);
-                }}
-              >
-                Подтвердить
-              </Button>
-            </Link>
-          </ModalFooter>
-        </Modal>
-      </>
-    );
-  }
-}
-
-export { StartPopup, EndBtn, DeleteBtn };
+export { MainPopup };

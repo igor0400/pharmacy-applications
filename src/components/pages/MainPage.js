@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import problemred from '../../img/icons/red.svg';
 import problemyellow from '../../img/icons/yellow.svg';
 import problemgreen from '../../img/icons/green.svg';
+import problemgrey from '../../img/icons/grey.svg';
 
 const arrMainPage = [
   {
@@ -13,11 +14,18 @@ const arrMainPage = [
     text: 'Все заявки',
   },
   {
+    dbLink: 'rejected',
+    pathLink: 'citiesRejected',
+    text: 'Отклоненные',
+    img: problemgrey,
+  },
+  {
     dbLink: 'unaccepted',
     pathLink: 'citiesUnaccepted',
     text: 'Непринятые',
     img: problemred,
   },
+
   {
     dbLink: 'inProgress',
     pathLink: 'citiesInProgress',

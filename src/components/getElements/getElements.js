@@ -6,6 +6,7 @@ import Problems from '../problems/problems';
 import ProblemId from '../problemId/problemId';
 
 const dbLinkAll = 'all';
+const dbLinkRejected = 'rejected';
 const dbLinkUnaccepted = 'unaccepted';
 const dbLinkInProgress = 'inProgress';
 const dbLinkDone = 'done';
@@ -14,6 +15,10 @@ const elementsData = [
   {
     dbLink: 'all',
     pathLink: 'citiesAll',
+  },
+  {
+    dbLink: 'rejected',
+    pathLink: 'citiesRejected',
   },
   {
     dbLink: 'unaccepted',
@@ -54,6 +59,7 @@ function GetElements() {
 
 export {
   dbLinkAll,
+  dbLinkRejected,
   dbLinkUnaccepted,
   dbLinkInProgress,
   dbLinkDone,

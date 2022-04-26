@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useApplicationsService from '../../services/ApplicationsService';
+import { storage } from '../../firebase';
 
 import Cards from '../cards/cards';
 
@@ -31,7 +32,7 @@ const Problems = (props) => {
   const problemText = (arr) => {
     let text;
     if (arr.length > 100) {
-      text = `${arr.substring(0, 101)}...`;
+      text = `${arr.substring(0, 60)}...`;
     } else {
       text = arr;
     }
@@ -53,6 +54,7 @@ const Problems = (props) => {
             >
               <div className="problem-cards">
                 <Cards
+                  imageLink={`${arr.city} ${arr.addres} ${arr.id2}`}
                   title={arr.date}
                   imgTitle={clock}
                   text={problemText(arr.problem)}

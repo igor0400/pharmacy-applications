@@ -1,24 +1,29 @@
 .app-item {
-   border-top: none;
-   border-left: none;
-   border-right: none;
-   border-bottom: 1px solid rgb(199, 199, 199);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(199, 199, 199);
 }
 .app-item-wrapper {
-   display: flex;
+  display: flex;
 }
 .app-item-img {
-   width: 25px;
-   height: 25px;
+  width: 25px;
+  height: 25px;
 }
 .app-item-text {
-   padding-left: 5px;
-   font-size: 17px;
-   font-weight: 500;
+  padding-left: 5px;
+  font-size: 17px;
+  font-weight: 500;
 }
 .app-item-addres-text {
-   padding-left: 5px;
-   font-size: 18px;
-   font-weight: 500;
-   display: flex;
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+}
+
+@media (max-width: 425px) {
+  .app-item-addres-text {
+    font-size: 17px;
+  }
 }
