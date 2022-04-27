@@ -566,7 +566,7 @@ const MainPopup = (props) => {
         <ModalHeader closeButton style={{ border: 'none' }} />
         <ModalBody
           className="modal-body-main-popup"
-          style={{ padding: '0 10px 10px 10px' }}
+          style={{ padding: '0 10px 20px 10px' }}
         >
           <StartPopup
             onFadePopup={() => setShow(false)}

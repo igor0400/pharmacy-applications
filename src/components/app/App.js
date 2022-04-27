@@ -7,6 +7,7 @@ import { GetElements } from '../getElements/getElements';
 import MainPage from '../pages/MainPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fancyapps/ui/dist/fancybox.css';
 import './App.css';
 
 function App() {

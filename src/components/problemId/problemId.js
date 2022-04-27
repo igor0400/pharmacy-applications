@@ -1,6 +1,7 @@
 import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useApplicationsService from '../../services/ApplicationsService';
+import Fancybox from '../../fancybox/Fancybox';
 
 import { MainPopup } from '../popups/problemIdPopups';
 
@@ -247,7 +248,9 @@ const ProblemId = (props) => {
                 </>
               ) : null}
 
-              <Images linkToFolder={`${arr.city} ${arr.addres} ${arr.id2}`} />
+              <ImagesCollection
+                linkToFolder={`${arr.city} ${arr.addres} ${arr.id2}`}
+              />
 
               <p className="fz-12 m-0">Ф. И. О.</p>
               <div className="default flex">
@@ -298,9 +301,19 @@ function Images(props) {
       {links.map((item, i) => (
         <div key={i}>
           <p className="images-title fz-12">Фото №{i + 1} о выполнении</p>
-          <img src={item} className="images-img" />
+          <img data-fancybox="gallery" src={item} className="images-img" />
         </div>
       ))}
+    </div>
+  );
+}
+
+function ImagesCollection(props) {
+  return (
+    <div className="images-collection">
+      <Fancybox>
+        <Images linkToFolder={props.linkToFolder} />
+      </Fancybox>
     </div>
   );
 }
