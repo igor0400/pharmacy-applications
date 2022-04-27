@@ -5,3 +5,10 @@
 .app {
   min-width: 320px;
 }
+a {
+  text-decoration: none;
+  color: #000;
+}
+a:hover {
+  color: #000;
+}
