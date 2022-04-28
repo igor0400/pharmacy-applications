@@ -13,15 +13,12 @@ const AppItemAddres = (props) => {
         borderLeft: 'none',
         borderRight: 'none',
         borderBottom: '1px solid rgb(199, 199, 199)',
+        padding: '10px 7px 10px 2px',
       }}
     >
       <div className="app-item-wrapper ms-2 me-auto">
         <div className="app-item-addres-text" style={props.stylesArr}>
-          <img
-            src={props.img}
-            alt="plus"
-            style={{ paddingRight: '3px' }}
-          />
+          <img src={props.img} alt="plus" style={{ paddingRight: '3px' }} />
           {props.text}
         </div>
       </div>

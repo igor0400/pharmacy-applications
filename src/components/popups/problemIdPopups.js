@@ -22,7 +22,12 @@ import {
 import { linkToFirebase } from '../../services/dbLinks';
 import { storage } from '../../firebase';
 
+// images
 import tresh from '../../img/icons/alternate-trash.svg';
+import problemred from '../../img/icons/red.svg';
+import problemyellow from '../../img/icons/yellow.svg';
+import problemgreen from '../../img/icons/green.svg';
+import problemgrey from '../../img/icons/grey.svg';
 
 import './problemIdPopups.css';
 

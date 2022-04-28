@@ -40,93 +40,87 @@ const ProblemId = (props) => {
   }, []);
 
   const stylesAddres = (arr) => {
-    let style;
-
-    if (arr.substring(0, 2) === 'АД') {
-      style = { color: 'rgb(0, 177, 31)' };
-    } else if (arr.substring(0, 2) === 'ФЗ') {
-      style = { color: 'rgb(3, 123, 228)' };
+    switch (arr.substring(0, 2)) {
+      case 'АД':
+        return { color: 'rgb(0, 177, 31)' };
+      case 'ФЗ':
+        return { color: 'rgb(3, 123, 228)' };
+      default:
+        return { color: '#000000' };
     }
-
-    return style;
   };
 
   const imgAddres = (arr) => {
-    let img;
-
-    if (arr.substring(0, 2) === 'АД') {
-      img = greenPlus;
-    } else if (arr.substring(0, 2) === 'ФЗ') {
-      img = bluePlus;
+    switch (arr.substring(0, 2)) {
+      case 'АД':
+        return greenPlus;
+      case 'ФЗ':
+        return bluePlus;
+      default:
+        return null;
     }
-
-    return img;
   };
 
   const imgText = (arr) => {
-    let imgText;
-
-    if (arr === 'Cрочно') {
-      imgText = lightningPrioritet;
-    } else {
-      imgText = lightning;
+    switch (arr) {
+      case 'Cрочно':
+        return lightningPrioritet;
+      case 'Не срочно':
+        return lightning;
+      default:
+        return null;
     }
-
-    return imgText;
   };
 
   const pharmacyName = (arr) => {
-    let name;
-
-    if (arr.substring(0, 2) === 'АД') {
-      name = (
-        <div className="flex">
-          <img className="m-4-3" src={greenPlus} alt="plus" />
-          <p className="m-0" style={{ color: 'rgb(0, 177, 31)' }}>
-            Для Бережливых
-          </p>
-        </div>
-      );
-    } else if (arr.substring(0, 2) === 'ФЗ') {
-      name = (
-        <div className="flex">
-          <img className="m-3-3" src={bluePlus} alt="plus" />
-          <p className="m-0" style={{ color: 'rgb(3, 123, 228)' }}>
-            Формула Здоровья
-          </p>
-        </div>
-      );
+    switch (arr.substring(0, 2)) {
+      case 'АД':
+        return (
+          <div className="flex">
+            <img className="m-4-3" src={greenPlus} alt="plus" />
+            <p className="m-0" style={{ color: 'rgb(0, 177, 31)' }}>
+              Для Бережливых
+            </p>
+          </div>
+        );
+      case 'ФЗ':
+        return (
+          <div className="flex">
+            <img className="m-3-3" src={bluePlus} alt="plus" />
+            <p className="m-0" style={{ color: 'rgb(3, 123, 228)' }}>
+              Формула Здоровья
+            </p>
+          </div>
+        );
+      default:
+        throw new Error('error in pharmacyName');
     }
-
-    return name;
   };
 
   const statusIcon = (arr) => {
-    let img;
-
-    if (arr === 'Не принято') {
-      img = problemred;
-    } else if (arr === 'В процессе') {
-      img = problemyellow;
-    } else if (arr === 'Выполнено') {
-      img = problemgreen;
-    } else if (arr === 'Отклонено') {
-      img = problemgrey;
+    switch (arr) {
+      case 'Не принято':
+        return problemred;
+      case 'В процессе':
+        return problemyellow;
+      case 'Выполнено':
+        return problemgreen;
+      case 'Отклонено':
+        return problemgrey;
+      default:
+        return null;
     }
-
-    return img;
   };
 
   const prioritetIcon = (arr) => {
-    let img;
-
-    if (arr === 'Cрочно') {
-      img = redPrioritet;
-    } else if (arr === 'Не срочно') {
-      img = lightPrioritet;
+    switch (arr) {
+      case 'Cрочно':
+        return redPrioritet;
+      case 'Не срочно':
+        return lightPrioritet;
+      default:
+        return null;
     }
-
-    return img;
   };
 
   const dateDone = () => {

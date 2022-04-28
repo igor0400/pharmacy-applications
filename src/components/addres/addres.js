@@ -49,27 +49,25 @@ const Addres = (props) => {
   }, []);
 
   const styles = (arr) => {
-    let style;
-
-    if (arr.substring(0, 2) === 'АД') {
-      style = { color: 'rgb(0, 177, 31)' };
-    } else if (arr.substring(0, 2) === 'ФЗ') {
-      style = { color: 'rgb(3, 123, 228)' };
+    switch (arr.substring(0, 2)) {
+      case 'АД':
+        return { color: 'rgb(0, 177, 31)' };
+      case 'ФЗ':
+        return { color: 'rgb(3, 123, 228)' };
+      default:
+        return { color: '#000000' };
     }
-
-    return style;
   };
 
   const img = (arr) => {
-    let img;
-
-    if (arr.substring(0, 2) === 'АД') {
-      img = greenPlus;
-    } else if (arr.substring(0, 2) === 'ФЗ') {
-      img = bluePlus;
+    switch (arr.substring(0, 2)) {
+      case 'АД':
+        return greenPlus;
+      case 'ФЗ':
+        return bluePlus;
+      default:
+        return null;
     }
-
-    return img;
   };
 
   return (

@@ -7,15 +7,14 @@ import './cards.css';
 
 const Cards = (props) => {
   const imgText = () => {
-    let imgText;
-
-    if (props.prioritet === 'Cрочно') {
-      imgText = props.imgPrioritet;
-    } else {
-      imgText = props.imgText;
+    switch (props.prioritet) {
+      case 'Cрочно':
+        return props.imgPrioritet;
+      case 'Не срочно':
+        return props.imgText;
+      default:
+        throw new Error('error in cards img text');
     }
-
-    return imgText;
   };
 
   return (
