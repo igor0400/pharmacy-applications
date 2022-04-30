@@ -71,7 +71,7 @@ const Addres = (props) => {
   };
 
   return (
-    <div>
+    <>
       {addres.map((arr, i) => (
         <Route key={i} exact path={`/${props.pathLink}/${arr.city}`}>
           <ListGroup variant="flush">
@@ -95,7 +95,7 @@ const Addres = (props) => {
           </ListGroup>
         </Route>
       ))}
-    </div>
+    </>
   );
 };
 

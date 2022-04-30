@@ -39,61 +39,51 @@ const ProblemId = (props) => {
     });
   }, []);
 
-  const stylesAddres = (arr) => {
+  const getAddressParams = (arr) => {
     switch (arr.substring(0, 2)) {
       case 'АД':
-        return { color: 'rgb(0, 177, 31)' };
+        return {
+          stylesAddres: { color: 'rgb(0, 177, 31)' },
+          imgAddres: greenPlus,
+          pharmacyName: (
+            <div className="flex">
+              <img className="m-4-3" src={greenPlus} alt="plus" />
+              <p className="m-0" style={{ color: 'rgb(0, 177, 31)' }}>
+                Для Бережливых
+              </p>
+            </div>
+          ),
+        };
       case 'ФЗ':
-        return { color: 'rgb(3, 123, 228)' };
+        return {
+          stylesAddres: { color: 'rgb(3, 123, 228)' },
+          imgAddres: bluePlus,
+          pharmacyName: (
+            <div className="flex">
+              <img className="m-3-3" src={bluePlus} alt="plus" />
+              <p className="m-0" style={{ color: 'rgb(3, 123, 228)' }}>
+                Формула Здоровья
+              </p>
+            </div>
+          ),
+        };
       default:
-        return { color: '#000000' };
+        return {
+          stylesAddres: { color: '#000000' },
+          imgAddres: null,
+          pharmacyName: 'нет',
+        };
     }
   };
 
-  const imgAddres = (arr) => {
-    switch (arr.substring(0, 2)) {
-      case 'АД':
-        return greenPlus;
-      case 'ФЗ':
-        return bluePlus;
-      default:
-        return null;
-    }
-  };
-
-  const imgText = (arr) => {
+  const getPrioritetParams = (arr) => {
     switch (arr) {
       case 'Cрочно':
-        return lightningPrioritet;
+        return { imgText: lightningPrioritet, prioritetIcon: redPrioritet };
       case 'Не срочно':
-        return lightning;
+        return { imgText: lightning, prioritetIcon: lightPrioritet };
       default:
-        return null;
-    }
-  };
-
-  const pharmacyName = (arr) => {
-    switch (arr.substring(0, 2)) {
-      case 'АД':
-        return (
-          <div className="flex">
-            <img className="m-4-3" src={greenPlus} alt="plus" />
-            <p className="m-0" style={{ color: 'rgb(0, 177, 31)' }}>
-              Для Бережливых
-            </p>
-          </div>
-        );
-      case 'ФЗ':
-        return (
-          <div className="flex">
-            <img className="m-3-3" src={bluePlus} alt="plus" />
-            <p className="m-0" style={{ color: 'rgb(3, 123, 228)' }}>
-              Формула Здоровья
-            </p>
-          </div>
-        );
-      default:
-        throw new Error('error in pharmacyName');
+        return { imgText: null, prioritetIcon: null };
     }
   };
 
@@ -107,17 +97,6 @@ const ProblemId = (props) => {
         return problemgreen;
       case 'Отклонено':
         return problemgrey;
-      default:
-        return null;
-    }
-  };
-
-  const prioritetIcon = (arr) => {
-    switch (arr) {
-      case 'Cрочно':
-        return redPrioritet;
-      case 'Не срочно':
-        return lightPrioritet;
       default:
         return null;
     }
@@ -153,8 +132,11 @@ const ProblemId = (props) => {
           <div className="problemIdCard-wrapper">
             <div className="problemIdCard-top">
               <div className="problemIdCard-top-title flex">
-                <img src={imgAddres(arr.addres)} alt="plus" />
-                <h5 className="m-0" style={stylesAddres(arr.addres)}>
+                <img src={getAddressParams(arr.addres).imgAddres} alt="plus" />
+                <h5
+                  className="m-0"
+                  style={getAddressParams(arr.addres).stylesAddres}
+                >
                   {arr.addres}
                 </h5>
               </div>
@@ -165,7 +147,7 @@ const ProblemId = (props) => {
               <div className="problemIdCard-top-descr flex">
                 <img
                   className="m-6-3"
-                  src={imgText(arr.prioritet)}
+                  src={getPrioritetParams(arr.prioritet).imgText}
                   alt="lightning"
                 />
                 <p className="m-0">{arr.problem}</p>
@@ -193,7 +175,9 @@ const ProblemId = (props) => {
             </div>
             <div className="problemIdCard-bottom">
               <p className="fz-12 m-0">Аптечная сеть</p>
-              <div className="default">{pharmacyName(arr.addres)}</div>
+              <div className="default">
+                {getAddressParams(arr.addres).pharmacyName}
+              </div>
               <p className="fz-12 m-0">Статус выполнения</p>
               <div className="problemIdCard-bottom-status flex">
                 <img
@@ -226,7 +210,7 @@ const ProblemId = (props) => {
               <p className="fz-12 m-0">Срочность</p>
               <div className="problemIdCard-bottom-prioritet flex">
                 <img
-                  src={prioritetIcon(arr.prioritet)}
+                  src={getPrioritetParams(arr.prioritet).prioritetIcon}
                   alt="prioritet"
                   className="m-3-3"
                 />

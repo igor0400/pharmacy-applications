@@ -23,11 +23,10 @@ import { linkToFirebase } from '../../services/dbLinks';
 import { storage } from '../../firebase';
 
 // images
-import tresh from '../../img/icons/alternate-trash.svg';
-import problemred from '../../img/icons/red.svg';
 import problemyellow from '../../img/icons/yellow.svg';
 import problemgreen from '../../img/icons/green.svg';
 import problemgrey from '../../img/icons/grey.svg';
+import tresh from '../../img/icons/alternate-trash.svg';
 
 import './problemIdPopups.css';
 
@@ -113,7 +112,8 @@ const StartPopup = (props) => {
         onClick={() => setShow(true)}
         style={{ boxShadow: 'none' }}
       >
-        Начать выполнение
+        Начать выполнение{' '}
+        <img src={problemyellow} alt="yellow" className="btn-image" />
       </Button>
 
       <Modal show={show} onHide={() => setShow(false)}>
@@ -257,7 +257,8 @@ const EndBtn = (props) => {
         onClick={() => setShow(true)}
         style={{ boxShadow: 'none' }}
       >
-        Закончить выполнение
+        Закончить выполнение{' '}
+        <img src={problemgreen} alt="yellow" className="btn-image" />
       </Button>
 
       <Modal show={show} onHide={() => setShow(false)}>
@@ -410,7 +411,7 @@ const RejectedPopup = (props) => {
         onClick={() => setShow(true)}
         style={{ boxShadow: 'none' }}
       >
-        Отклонить
+        Отклонить <img src={problemgrey} alt="yellow" className="btn-image" />
       </Button>
 
       <Modal show={show} onHide={() => setShow(false)}>
@@ -524,11 +525,11 @@ const DeleteBtn = (props) => {
 
       <Modal show={show} onHide={() => setShow(false)}>
         <ModalHeader closeButton style={{ border: 'none' }} />
-        <ModalBody style={{paddingBottom: '60px'}}>
+        <ModalBody style={{ paddingBottom: '60px' }}>
           Вы уверенны? Заявка будет удалена из всех разделов без возможности
           возврата
         </ModalBody>
-        <ModalFooter style={{ border: 'none' }}>
+        <ModalFooter style={{ border: 'none', paddingBottom: '25px' }}>
           <Button variant="secondary" onClick={() => setShow(false)}>
             Отмена
           </Button>

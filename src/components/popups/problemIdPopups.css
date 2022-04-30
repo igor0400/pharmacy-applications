@@ -1,11 +1,17 @@
-.tresh-btn img{
-   width: 17px;
-   height: 17px;
-   margin: -5px 0 0 10px;
+.tresh-btn img {
+  width: 17px;
+  height: 17px;
+  margin: -5px 0 0 10px;
 }
 .modal-body-main-popup {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 200px);
+  grid-template-columns: 270px;
   gap: 10px;
   justify-content: center;
+}
+
+.btn-image {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 3px;
 }

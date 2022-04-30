@@ -48,6 +48,11 @@ const Cities = (props) => {
       newArray2.push(citiesCount);
       setCitiesCount(newArray2);
     });
+
+    return () => {
+      setCities(null);
+      setCitiesCount(null);
+    };
   }, []);
 
   const errorMessage = error ? <ErrorMessage /> : null;

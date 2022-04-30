@@ -19,8 +19,8 @@ const Header = () => {
       <Route exact path="/">
         <div style={{ marginLeft: '40px' }}></div>
       </Route>
-      {paths.map((item) => (
-        <Route exact path={item}>
+      {paths.map((item, i) => (
+        <Route exact path={item} key={i}>
           <img
             src={arrow}
             alt="arrow"
