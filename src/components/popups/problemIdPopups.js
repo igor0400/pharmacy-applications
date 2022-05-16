@@ -156,6 +156,7 @@ const EndBtn = (props) => {
   const [image, setImage] = useState({});
   const [num, setNum] = useState(0);
   const [input, setInput] = useState(null);
+  const [fileInputId, setFileInputId] = useState(['0']);
 
   const deleteProblem = async (dbLink) => {
     axios.get(`${dbLink}.json`).then((response) => {
@@ -245,10 +246,14 @@ const EndBtn = (props) => {
       }
     };
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < fileInputId.length + 1; i++) {
       setFireRef(i);
     }
   };
+
+  const addInput = () => {
+    setFileInputId((state) => ([...state, +state.length + 1]))
+  }
 
   return (
     <>
@@ -273,38 +278,19 @@ const EndBtn = (props) => {
             style={{ marginTop: '28px' }}
             onChange={(e) => setInput(e.target.value)}
           />
-          <Form.Control
-            type="file"
-            onChange={imgHandleChange}
-            style={{ marginTop: '15px' }}
-          />
-          <Form.Control
-            type="file"
-            onChange={imgHandleChange}
-            style={{ marginTop: '15px' }}
-          />
-          <Form.Control
-            type="file"
-            onChange={imgHandleChange}
-            style={{ marginTop: '15px' }}
-          />
-          <Form.Control
-            type="file"
-            onChange={imgHandleChange}
-            style={{ marginTop: '15px' }}
-          />
-          <Form.Control
-            type="file"
-            onChange={imgHandleChange}
-            style={{ marginTop: '15px' }}
-          />
-          <Form.Control
-            type="file"
-            onChange={imgHandleChange}
-            style={{ margin: '15px 0 12px 0' }}
-          />
+          {fileInputId.map((item) => (
+            <Form.Control
+              id={item}
+              type="file"
+              onChange={imgHandleChange}
+              style={{ marginTop: '15px' }}
+            />
+          ))}
+          <div className="add-input" onClick={addInput}>
+            Добавить файл
+          </div>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={{ marginTop: '10px' }}>
           <Button variant="secondary" onClick={() => setShow(false)}>
             Отмена
           </Button>
