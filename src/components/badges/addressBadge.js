@@ -3,8 +3,8 @@ import useApplicationsService from '../../services/ApplicationsService';
 
 import LoadingSmall from '../loading/LoadingSmall';
 
-const AddresBadge = (props) => {
-  const [addresCount, setAddresCount] = useState([]);
+const AddressBadge = (props) => {
+  const [addressCount, setAddressCount] = useState([]);
   const { loading, getApplications } = useApplicationsService();
 
   useEffect(() => {
@@ -25,15 +25,15 @@ const AddresBadge = (props) => {
         }
       }
 
-      const addresCountObj = citiesArr[props.city].reduce((a, b) => {
-        a[b.addres] = (a[b.addres] || 0) + 1;
+      const addressCountObj = citiesArr[props.city].reduce((a, b) => {
+        a[b.address] = (a[b.address] || 0) + 1;
 
         return a;
       }, {});
 
       const newArray2 = [];
-      newArray2.push(addresCountObj);
-      setAddresCount(newArray2);
+      newArray2.push(addressCountObj);
+      setAddressCount(newArray2);
     });
   }, []);
 
@@ -42,9 +42,9 @@ const AddresBadge = (props) => {
   return (
     <div>
       {spinner}
-      {!loading ? addresCount.map((item) => item[props.addres])[0] : null}
+      {!loading ? addressCount.map((item) => item[props.address])[0] : null}
     </div>
   );
 };
 
-export default AddresBadge;
+export default AddressBadge;

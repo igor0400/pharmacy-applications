@@ -44,16 +44,16 @@ const Problems = (props) => {
         <Route
           key={i}
           exact
-          path={`/${props.pathLink}/${arr.city}/${arr.addres}`}
+          path={`/${props.pathLink}/${arr.city}/${arr.address}`}
         >
           <ListGroup variant="flush">
             <Link
-              to={`/${props.pathLink}/${arr.city}/${arr.addres}/${arr.id}`}
+              to={`/${props.pathLink}/${arr.city}/${arr.address}/${arr.id}`}
               className="a"
             >
               <div className="problem-cards">
                 <Cards
-                  imageLink={`${arr.city} ${arr.addres} ${arr.id2}`}
+                  imageLink={`${arr.city} ${arr.address} ${arr.id2}`}
                   title={arr.date}
                   imgTitle={clock}
                   text={problemText(arr.problem)}
@@ -62,7 +62,7 @@ const Problems = (props) => {
                   imgPrioritet={lightningPrioritet}
                   pathLink={props.pathLink}
                   city={arr.city}
-                  addres={arr.addres}
+                  address={arr.address}
                   problem={arr.problem}
                 />
               </div>

@@ -11,27 +11,27 @@ import '@fancyapps/ui/dist/fancybox.css';
 import './App.css';
 
 function App() {
-  return (
-    <Router>
-      <div className="app">
-        <Header />
-        <main>
-          <Switch>
-            <Route exact path="/">
-              <div className="app">
-                <ListGroup variant="flush">
-                  <MainPage />
-                </ListGroup>
-              </div>
-            </Route>
-            <GetElements />
-          </Switch>
-        </main>
-        <div className="under-footer"></div>
-        <Footer />
-      </div>
-    </Router>
-  );
+   return (
+      <Router>
+         <div className="app">
+            <Header />
+            <main>
+               <Switch>
+                  <Route exact path="/">
+                     <div className="app">
+                        <ListGroup variant="flush">
+                           <MainPage />
+                        </ListGroup>
+                     </div>
+                  </Route>
+                  <GetElements />
+               </Switch>
+            </main>
+            <div className="under-footer"></div>
+            <Footer />
+         </div>
+      </Router>
+   );
 }
 
 export default App;

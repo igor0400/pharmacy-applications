@@ -43,8 +43,8 @@ const ProblemId = (props) => {
     switch (arr.substring(0, 2)) {
       case 'АД':
         return {
-          stylesAddres: { color: 'rgb(0, 177, 31)' },
-          imgAddres: greenPlus,
+          stylesAddress: { color: 'rgb(0, 177, 31)' },
+          imgAddress: greenPlus,
           pharmacyName: (
             <div className="flex">
               <img className="m-4-3" src={greenPlus} alt="plus" />
@@ -56,8 +56,8 @@ const ProblemId = (props) => {
         };
       case 'ФЗ':
         return {
-          stylesAddres: { color: 'rgb(3, 123, 228)' },
-          imgAddres: bluePlus,
+          stylesAddress: { color: 'rgb(3, 123, 228)' },
+          imgAddress: bluePlus,
           pharmacyName: (
             <div className="flex">
               <img className="m-3-3" src={bluePlus} alt="plus" />
@@ -69,8 +69,8 @@ const ProblemId = (props) => {
         };
       default:
         return {
-          stylesAddres: { color: '#000000' },
-          imgAddres: null,
+          stylesAddress: { color: '#000000' },
+          imgAddress: null,
           pharmacyName: 'нет',
         };
     }
@@ -127,17 +127,17 @@ const ProblemId = (props) => {
         <Route
           key={i}
           exact
-          path={`/${props.pathLink}/${arr.city}/${arr.addres}/${arr.id}`}
+          path={`/${props.pathLink}/${arr.city}/${arr.address}/${arr.id}`}
         >
           <div className="problemIdCard-wrapper">
             <div className="problemIdCard-top">
               <div className="problemIdCard-top-title flex">
-                <img src={getAddressParams(arr.addres).imgAddres} alt="plus" />
+                <img src={getAddressParams(arr.address).imgAddress} alt="plus" />
                 <h5
                   className="m-0"
-                  style={getAddressParams(arr.addres).stylesAddres}
+                  style={getAddressParams(arr.address).stylesAddress}
                 >
-                  {arr.addres}
+                  {arr.address}
                 </h5>
               </div>
               <div className="problemIdCard-top-city flex">
@@ -154,7 +154,7 @@ const ProblemId = (props) => {
               </div>
               <MainPopup
                 dbLink={props.dbLink}
-                linkForImg={`${arr.city} ${arr.addres} ${arr.id2}`}
+                linkForImg={`${arr.city} ${arr.address} ${arr.id2}`}
                 id={arr.id2}
                 idFirebase={arr.id}
                 startData={{
@@ -176,7 +176,7 @@ const ProblemId = (props) => {
             <div className="problemIdCard-bottom">
               <p className="fz-12 m-0">Аптечная сеть</p>
               <div className="default">
-                {getAddressParams(arr.addres).pharmacyName}
+                {getAddressParams(arr.address).pharmacyName}
               </div>
               <p className="fz-12 m-0">Статус выполнения</p>
               <div className="problemIdCard-bottom-status flex">
@@ -227,7 +227,7 @@ const ProblemId = (props) => {
               ) : null}
 
               <ImagesCollection
-                linkToFolder={`${arr.city} ${arr.addres} ${arr.id2}`}
+                linkToFolder={`${arr.city} ${arr.address} ${arr.id2}`}
               />
 
               <p className="fz-12 m-0">Ф. И. О.</p>

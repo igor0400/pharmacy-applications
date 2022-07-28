@@ -3,7 +3,7 @@ import Badge from 'react-bootstrap/Badge';
 
 import './AppItem.css';
 
-const AppItemAddres = (props) => {
+const AppItemAddress = (props) => {
   return (
     <ListGroup.Item
       as="li"
@@ -28,4 +28,4 @@ const AppItemAddres = (props) => {
     </ListGroup.Item>
   );
 };
-export default AppItemAddres;
+export default AppItemAddress;

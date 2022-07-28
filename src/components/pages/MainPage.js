@@ -25,7 +25,6 @@ const arrMainPage = [
     text: 'Непринятые',
     img: problemred,
   },
-
   {
     dbLink: 'inProgress',
     pathLink: 'citiesInProgress',
